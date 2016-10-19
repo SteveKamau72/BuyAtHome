@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.firebase/firebase-iid/9.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ea4b54dcbfe5ac05efb0a314105f07258118d3a7">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-iid-9.0.0_7bb542ad8769083c16d79578292dba121366469b.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/jaxen/jaxen/1.1.3/eebcb4a8d7579c85494737e10d1a87495210a5a3/jaxen-1.1.3.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="eebcb4a8d7579c85494737e10d1a87495210a5a3">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/jaxen-1.1.3_964de9eb90ffaf827b7fdebcaef9cd193a5a5281.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/com.loopj.android/android-async-http/1.4.9/386a4339ffe52d5d63e80f9bed8d2b1d1a418249/android-async-http-1.4.9.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="386a4339ffe52d5d63e80f9bed8d2b1d1a418249">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.9_a5a1b23f885dafcb04d788c81cf350e77dea0626.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.android.support/design/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.android.support-design-23.4.0_34769ab9cb8a87b877359c6140b5072f1c0250b8.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/library-2.4.0_0bc5de66b5d990b92dc54339403925c1df433101.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/9.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8a36d229011e75f0caef408e1adf0d3fd4d94e02">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-tasks-9.4.0_102736bef2460f5dc78dd0a5396734738974cce7.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth/9.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="4b630471536351be7c3c3100735c75b7ad2cbd84">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-auth-9.4.0_1cb49814ba78fa076d277c8cb958c19392fb0f2b.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/BuyAtHome/dialogLibrary/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="f2a358fc5f3dc0d5d2ed53c574079649aef0da98">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/BuyAtHome-dialogLibrary-unspecified_8d9c75438692f22922c816f5f865be99822dff7d.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.ctrlplusz.anytextview/library/1.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="50d2bfcc70f783a4af19c630566b9228ef038066">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.ctrlplusz.anytextview-library-1.2_3c7b67882f52bd54af456341bc682fbeae42e242.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/org.greenrobot/eventbus/3.0.0/ddd99896e9569eaababbe81b35d80e1b91c4ad85/eventbus-3.0.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ddd99896e9569eaababbe81b35d80e1b91c4ad85">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/eventbus-3.0.0_3d93ec9ca22d3cfd33720f9e79d258073cab1185.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d9ecde39b460470e655de6e47c05573d2d5a8bfb">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.android.support-cardview-v7-23.4.0_43531def2858bda1a9862162ab5e8d09a1b3f330.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/libs/mail.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="428e267abff0d10802ccde86b915da2c20471160">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/mail_47ac4c2d049c52c1f85d2886f210453b02a5b192.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.firebase/firebase-database/9.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="32a5a566ae197603d0bed3e6d1d275f6a771564e">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-database-9.0.0_ff5608e4181a9eb6b4987a69efcda27e26bc378a.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-23.4.0_c6732192caf5b643426c4a1868a424ff68887b13.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/cz.msebera.android/httpclient/4.3.6/526a9f794eab830eae4f23a62c572878b3f491ab/httpclient-4.3.6.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="526a9f794eab830eae4f23a62c572878b3f491ab">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/httpclient-4.3.6_11b16a4fb6292fbdf5385702b2b91ea9f77d7344.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth-common/9.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="34762013d39dbe6c656050589c44e8b61b9a2c5d">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-auth-common-9.4.0_2c39d97fba77ee27ef10073a4ca1e8b1d0ab2af6.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth-base/9.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="7a23185c9b1c100e7d1a32275017e4712e31c796">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-auth-base-9.0.0_26841479383a88dd0cf9dfd9895f2480ddaf03cb.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-23.4.0_8993ad717883da691ac8aadcbaf693d5c4b5c805.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="618485fef3ebe12127f7622abbc9b5b39057b5c2">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-basement-9.4.0_782e55be5ff4d118060d2ddd37d6b6b767a75e4b.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.4/695b63d702f505b9b916e02272e3b6381bade7f/gson-2.4.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="0695b63d702f505b9b916e02272e3b6381bade7f">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/gson-2.4_73a0de42194816a1518456d671fdf97b4618d407.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.github.chrisbanes/PhotoView/1.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="81d41e53c215976ce172b9f61ef1e8fc2d67cf79">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.github.chrisbanes-PhotoView-1.3.0_161f9a580aefe0b0ca70da6781277f0ba518e7f5.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth/9.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="7da84426d876216ed4cdddd85e739be5ecabdd04">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-auth-9.0.0_763379d56caa2331cb10f7648eaea91686e87e54.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.pnikosis/materialish-progress/1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="57487745ce450899f9f250d5ae5c092a682cd041">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.pnikosis-materialish-progress-1.0_9ca1b6d82c84f91cc3d5b4529ab5d60364f5ffba.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/cn.carbs.android/MDDialog/1.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="cfe7479625fa717b8a6d5e7478a803950fc19864">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/cn.carbs.android-MDDialog-1.0.0_f8fbd2e7ba990c42055784aa77a7f8cf6f88830c.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.4.0_c285f060a8db4215588b24626e26624a614c14b8.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.toe.chowder/chowder/0.6.5/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="32fa9105a43762fadc3c2b6913a5464425e7fcd7">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.toe.chowder-chowder-0.6.5_fea5bee005fe0e996f2af9a8b6986a1054fad82e.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="3dee4ce5844d39d843d503fb8fe04e51e5bfffac">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-base-9.4.0_b3dee4ac7b64521b53bba0552f14bac1fe58270f.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/bolts-tasks-1.4.0_51808f7e81cd3bbd253f1a1c5ab228e14928b628.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics-impl/9.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="0dc8ab07eeceda5e99b305c8069765056b6e5c9d">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-analytics-impl-9.0.0_038b76854f63e0bc5e621d456703d87497d94725.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.firebase/firebase-database-connection/9.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ef5c5c2afbd174d55cf1cfcac7d0346cbc4c1322">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-database-connection-9.0.0_0d7c7f35c94f40e233ec82043a45d14a460b0126.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/com.alexgilleran/icesoap/1.1.0/7ac54c2d517be47b3df8d2a9b9b70847519b2149/icesoap-1.1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="7ac54c2d517be47b3df8d2a9b9b70847519b2149">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/icesoap-1.1.0_5d0f706151bb74fe79faedd15334ba2eafabad0b.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/libs/volley.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d4aaa36e04ee71a83444f8367c97a46fda662d2c">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/volley_82e3664e550eeceec2e2f3dbf54d4ac41b5be629.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/libs/additionnal.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="bd9e8dc422bb8c8405359947fe9f4282b49f57f4">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/additionnal_fc5646649f16a0ab8ac78832b924df757b723574.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.firebase/firebase-common/9.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="18b5697c65c4fe5b7381613b8b8ae9ac52e26fa7">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-common-9.4.0_468773c443c4fcd878f01cb02b2577ec7b2545d2.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-applinks/1.4.0/8ad21bf21784dacce5f2043afb97218cc377e835/bolts-applinks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8ad21bf21784dacce5f2043afb97218cc377e835">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/bolts-applinks-1.4.0_ef051011c162cec6af8d232ee28af83bdda896d5.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/libs/opencsv-2.4.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="60597690a065746f9dd950e2e47e5f476b6c7367">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/opencsv-2.4_76ee11a67c8543f5cc399d24cd96020720dca15a.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-23.4.0_5f9fff810253fec5c3c8f86932a70f981309ff94.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.melnykov/floatingactionbutton/1.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8c6ebb7d087d1a30bf84356bd2aecf85309fc024">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.melnykov-floatingactionbutton-1.3.0_b7b10a2aca0395e2cf812bb81a7240b97a8a9aaa.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.4.0_7e9aaecb1b2fc7169b3290f636d9065944982d85.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="820605b42a2d3d9cb9e6c4cc7453fb4f802aedff">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.facebook.android-facebook-android-sdk-4.15.0_708fb6c754bb287c9c140d4a0009e9a8bbec8ec4.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.8-RELEASE/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="02a43b4e0f1fc04fd60a3de8f6d5015d93703b3e">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.lsjwzh-materialloadingprogressbar-0.5.8-RELEASE_2daa4348bdcf6613d64885a8809ca9328800cf60.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.github.dmytrodanylyk.android-process-button/library/1.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="345a03c0e95969cbbf1e2900e29871b98d71f4cb">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.github.dmytrodanylyk.android-process-button-library-1.0.0_638b9e7218c56fa29e0aafa326a5ae091c5984f8.jar" />
+    </item>
+    <item
+        jar="/home/steve/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/31fbbff1ddbf98f3aa7377c94d33b0447c646b6e/httpcore-4.3.2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/httpcore-4.3.2_e0b7ee7159ae05090a449cade1ff7888a4c33768.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth-module/9.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6bc41d9d6fd12d2ef23c785a259011001f4a1a5b">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-auth-module-9.4.0_9654cc9a8b4f21c4769b2ee9108e7f74f5ffc888.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/libs/activation.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d1257cbff6faa44c1f325ae0d9413522d4644383">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/activation_4ffd7830bfb5eafb2b49dc387f5a255818c27e65.jar" />
+    </item>
+    <item
+        jar="/home/steve/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/support-annotations-23.4.0_7f542dec1e1582adb31f1a7e34903f112fb7c305.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics/9.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="4ef8ab5fee042023018249474bc93bd4b2b9c17e">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-analytics-9.0.0_2dce85d04edd6dd2a84ff0b525010af52f198047.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.android.support/customtabs/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="2d1eaa9e0b98f8fc4c2b989d9b30d4f1480648ac">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/com.android.support-customtabs-23.4.0_b4a4540422782f720da570ef097094ec3b48fd16.jar" />
+    </item>
+    <item
+        jar="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/libs/internal_impl-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/app/build/intermediates/pre-dexed/debug/internal_impl-23.4.0_c21d4d63554951085dd3a73c958eb2ea3c76b215.jar" />
+    </item>
+
+</items>

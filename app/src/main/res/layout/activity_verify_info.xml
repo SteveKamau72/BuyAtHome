@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:foobar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.softtech.stevekamau.buyathome.activites.VerifyInfo">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primaryColor"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/MyCustomToolBarTheme">
+
+        <TextView
+            android:id="@+id/text_view_toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:textColor="@color/text_color"
+            android:textSize="16dp" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:background="@color/btn_logut_bg">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/amount"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingLeft="5dp"
+                    android:text="Kshs "
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingLeft="5dp"
+                    android:text="4000"
+                    android:textColor="@color/white"
+                    android:textSize="22dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rel1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/app_bar"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:background="@drawable/bg_border_rectangle">
+
+                    <com.ctrlplusz.anytextview.AnyTextView
+                        android:id="@+id/title1"
+                        style="@style/button_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="-5dp"
+                        android:background="@drawable/black_rectangle"
+                        android:text="Your Personal Details"
+                        android:textSize="16dp"
+                        foobar:typeface="Gudea-Regular.ttf" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_personal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/title1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_verified_info" />
+
+                        <com.ctrlplusz.anytextview.AnyTextView
+                            android:id="@id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Your Payment details"
+                            android:textSize="18dp"
+                            foobar:typeface="Gudea-Regular.ttf" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_personal1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/linear_personal"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_verified_info" />
+
+                        <com.ctrlplusz.anytextview.AnyTextView
+                            android:id="@id/email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Your Payment details"
+                            android:textSize="18dp"
+                            foobar:typeface="Gudea-Regular.ttf" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_personal2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/linear_personal1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_verified_info" />
+
+                        <com.ctrlplusz.anytextview.AnyTextView
+                            android:id="@+id/phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Your Payment details"
+                            android:textSize="18dp"
+                            foobar:typeface="Gudea-Regular.ttf" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/edit_personal_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/linear_personal2"
+                        android:background="@null"
+                        android:onClick="onClick"
+                        android:text="Edit Personal details"
+                        android:textColor="#f39c12" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rel2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/app_bar"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:background="@drawable/bg_border_rectangle">
+
+                    <com.ctrlplusz.anytextview.AnyTextView
+                        android:id="@+id/title2"
+                        style="@style/button_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="-5dp"
+                        android:background="@drawable/black_rectangle"
+                        android:text="Your Payment Information"
+                        android:textSize="16dp"
+                        foobar:typeface="Gudea-Regular.ttf" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_payment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/title2"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_verified_info" />
+
+                        <com.ctrlplusz.anytextview.AnyTextView
+                            android:id="@+id/tvamount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Your Payment details"
+                            android:textSize="18dp"
+                            foobar:typeface="Gudea-Regular.ttf" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_payment1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/linear_payment"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_verified_info" />
+
+                        <com.ctrlplusz.anytextview.AnyTextView
+                            android:id="@+id/payment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="Your Payment details"
+                            android:textSize="18dp"
+                            foobar:typeface="Gudea-Regular.ttf" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/edit_payment_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/linear_payment1"
+                        android:background="@null"
+                        android:onClick="onClick"
+                        android:text="Edit Payment Info"
+                        android:textColor="#f39c12" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/app_bar"
+                android:layout_marginBottom="7dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/bg_border_rectangle">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/title3"
+                    style="@style/button_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="-5dp"
+                    android:background="@drawable/black_rectangle"
+                    android:text="Your Shipping Details"
+                    android:textSize="16dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <LinearLayout
+                    android:id="@+id/linear_shipping"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title3"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_verified_info" />
+
+                    <com.ctrlplusz.anytextview.AnyTextView
+                        android:id="@+id/shipping"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Your Payment details"
+                        android:textSize="18dp"
+                        foobar:typeface="Gudea-Regular.ttf" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_shipping1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linear_shipping"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_verified_info" />
+
+                    <com.ctrlplusz.anytextview.AnyTextView
+                        android:id="@+id/city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Your Payment details"
+                        android:textSize="18dp"
+                        foobar:typeface="Gudea-Regular.ttf" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_shipping2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linear_shipping1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_verified_info" />
+
+                    <com.ctrlplusz.anytextview.AnyTextView
+                        android:id="@+id/landmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Your Payment details"
+                        android:textSize="18dp"
+                        foobar:typeface="Gudea-Regular.ttf" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/edit_shipping_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/linear_shipping2"
+                    android:background="@null"
+                    android:onClick="onClick"
+                    android:text="Edit Shipping Details"
+                    android:textColor="#f39c12" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_fab_accept" />
+</RelativeLayout>

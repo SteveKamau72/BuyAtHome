@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activites.Details">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/badge"
+        android:actionLayout="@layout/feed_update_count"
+        android:icon="@drawable/shape_notification"
+        android:title="@string/action_refresh"
+        app:showAsAction="always">
+    </item>
+</menu>

@@ -1,0 +1,254 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:foobar="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primaryColor"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/MyCustomToolBarTheme">
+
+        <TextView
+            android:id="@+id/text_view_toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:textColor="@color/text_color"
+            android:textSize="16dp" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:background="@color/btn_logut_bg">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/amount"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingLeft="5dp"
+                    android:text="Kshs "
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingLeft="5dp"
+                    android:text="4000"
+                    android:textColor="@color/white"
+                    android:textSize="22dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="0px"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <requestFocus />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/app_bar"
+                android:layout_marginBottom="7dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/bg_border_rectangle">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/whatsNew"
+                    style="@style/button_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="-5dp"
+                    android:background="@drawable/black_rectangle"
+                    android:text="Payment details"
+                    android:textSize="16dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/whatsNew"
+                    android:layout_marginTop="5dp"
+                    android:onClick="onCheckBoxClicked" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_below="@+id/whatsNew"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="21dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/checkBox"
+                    android:layout_toRightOf="@+id/checkBox"
+                    android:text="Pay through MPESA"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/lipa"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="13dp"
+                    android:src="@drawable/lipa" />
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lipa"
+                    android:layout_marginTop="-5dp"
+                    android:background="@null"
+                    android:text="Pay with MPESA"
+                    android:textColor="#f39c12" />
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@+id/button4"
+                    android:background="#CCC" />
+
+                <CheckBox
+                    android:id="@+id/checkBox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/view1"
+                    android:onClick="onCheckBoxClicked"
+                    android:text="Cash On Delivery" />
+
+
+                <TextView
+                    android:id="@+id/message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/checkBox2"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/blue_rectangle"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Free delivery should be around Nairobi and it's environs.Please review our Delivery Policy."
+                    android:textColor="#FFFFFF"
+                    android:textSize="14dp" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/message"
+                    android:background="@null"
+                    android:text="Delivery Policy"
+                    android:textColor="#f39c12" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rel1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_border_rectangle">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/whatsNew2"
+                    style="@style/button_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="-5dp"
+                    android:background="@drawable/black_rectangle"
+                    android:text="How to get your products"
+                    android:textSize="16dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <CheckBox
+                    android:id="@+id/deliver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/whatsNew2"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:onClick="onCheckBoxClicked"
+                    android:text="Ship to me" />
+
+
+                <CheckBox
+                    android:id="@+id/selfcollect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deliver"
+                    android:layout_marginBottom="10dp"
+                    android:onClick="onCheckBoxClicked"
+                    android:text="I'll Self-collect" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <TextView
+        android:id="@+id/deliverTxt"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+    <TextView
+        android:id="@+id/selfcollectTxt"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+    <TextView
+        android:id="@+id/mpesaTxt"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+    <TextView
+        android:id="@+id/cashTxt"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_action_next" />
+</RelativeLayout>

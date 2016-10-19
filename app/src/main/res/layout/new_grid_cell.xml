@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_row_selector"
+        card_view:cardCornerRadius="3dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- Thumbnail Image -->
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="50dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/loading4" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/new_icon" />
+            <!-- Title -->
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/thumbnail"
+                android:background="#CCbdbdbd"
+                android:paddingLeft="3dp"
+                android:singleLine="true"
+                android:text="dummy"
+                android:textSize="@dimen/title"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#CCFFFFFF"
+                    android:text="Ksh."
+                    android:textColor="#bf360c"
+                    android:textSize="@dimen/rating"
+                    android:textStyle="bold" />
+                <!-- Price -->
+                <TextView
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:background="#CCFFFFFF"
+                    android:text="dummy"
+                    android:textColor="#bf360c"
+                    android:textSize="@dimen/rating"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <!-- Description -->
+            <TextView
+                android:id="@+id/genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:background="#CCbdbdbd"
+                android:paddingLeft="3dp"
+                android:singleLine="true"
+                android:text="dummy"
+                android:textColor="@color/genre"
+                android:textSize="@dimen/genre" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

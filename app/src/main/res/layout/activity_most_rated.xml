@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activites.MostRated">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"></include>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminateDrawable="@drawable/progress"
+        android:visibility="gone"></ProgressBar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/whatsNew2"
+                style="@style/button_text"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/separator3" />
+
+            <com.softtech.stevekamau.buyathome.InnerGridView
+                android:id="@+id/grid2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/whatsNew"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:columnWidth="90dp"
+                android:gravity="center"
+                android:horizontalSpacing="5dp"
+                android:listSelector="@drawable/list_row_selector"
+                android:numColumns="2"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="5dp" />
+
+            <View
+                android:id="@+id/whatsNew"
+                style="@style/button_text"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/separator3" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

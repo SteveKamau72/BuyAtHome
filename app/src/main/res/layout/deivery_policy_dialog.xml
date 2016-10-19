@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/basket"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:src="@drawable/cash" />
+
+    <TextView
+        android:id="@+id/textv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/basket"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:text="DELIVERY POLICY"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/textv3"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:background="#CCC"></View>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
+        android:gravity="center_horizontal"
+        android:text="BuyAtHome promises to provide you with the best-in-class shopping experience at every step of the way. We assure you that all due precautions are taken so that your package are delivered to you intact and on time by our delivery partner. Just proceed with your order and we’ll do the rest.
+        Next day delivery for items within Nairobi. This is a first in delivery e-commerce in Kenya and applies to any orders confirmed before 2:00pm on business days.For all other regions, BuyAtHome strives to deliver your product within 2-5 business days.
+        BuyAtHome aims to deliver your products within 7 days from the time of order confirmation
+For all products, our customer service agents will inform you of the expected delivery timeline when confirming your order. In case you face any difficulty, you can email us anytime at buyathome2015@gmail.com or call us at +254711219490
+"
+        android:textColor="#000"></TextView>
+</RelativeLayout>

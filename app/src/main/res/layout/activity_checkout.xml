@@ -1,0 +1,131 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.snappy.stevekamau.cosmeticsapp.Details">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/app_bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_border_rectangle"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/whatsNew"
+                style="@style/button_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/black_rectangle"
+                android:text="Your information"
+                android:textSize="16dp" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/whatsNew"
+                android:background="@null"
+                android:text="Register/Log in now"
+                android:textColor="#f39c12" />
+
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/whatsNew"
+                android:layout_margin="3dp"
+                android:background="@drawable/custom_edit_text"
+                android:hint="Full name"
+                android:singleLine="true">
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editText1"
+                android:layout_margin="3dp"
+                android:background="@drawable/custom_edit_text"
+                android:hint="Email"
+                android:singleLine="true">
+
+            </EditText>
+
+            <EditText
+                android:id="@+id/editText3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editText2"
+                android:layout_margin="3dp"
+                android:background="@drawable/custom_edit_text"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:singleLine="true">
+
+            </EditText>
+
+            <EditText
+                android:id="@+id/editText4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editText3"
+                android:layout_margin="3dp"
+                android:background="@drawable/custom_edit_text"
+                android:hint="Residence"></EditText>
+
+            <View
+                android:id="@+id/whatsNew2"
+                style="@style/button_text"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/editText4" />
+
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button4"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/blue_rectangle"
+                android:gravity="center"
+                android:padding="7dp"
+                android:text="Please Register with us to ensure that we get your full details for better customer experience.
+            Registration is a free and fast process with BuyAtHome."
+                android:textColor="#FFFFFF"
+                android:textSize="14dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnCheckout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="40dip"
+        android:background="@color/btn_logut_bg"
+        android:text="PROCEED"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15dp" />
+
+
+</RelativeLayout>

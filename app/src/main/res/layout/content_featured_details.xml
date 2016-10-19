@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.softtech.stevekamau.buyathome.activites.FeaturedDetails"
+    tools:showIn="@layout/activity_featured_details">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/share"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/separator"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bg_border_rectangle_clicked"
+                android:clickable="true"
+                android:padding="7dp"
+                android:src="@drawable/ic_action_share" />
+
+            <!--<ImageView
+                android:id="@+id/favourite"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="7dp"
+                android:layout_toRightOf="@+id/share"
+                android:background="@drawable/bg_border_rectangle_clicked"
+                android:clickable="true"
+                android:padding="7dp"
+                android:src="@drawable/ic_action_favorite" />-->
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/large_text" />
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>
