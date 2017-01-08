@@ -160,7 +160,7 @@
                     android:background="@drawable/blue_rectangle"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Free delivery should be around Nairobi and it's environs.Please review our Delivery Policy."
+                    android:text="Place orders without the need of an advance payment. Only pay for what you receive. Please review our Delivery Policy."
                     android:textColor="#FFFFFF"
                     android:textSize="14dp" />
 
@@ -250,5 +250,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_action_next" />
+        android:src="@drawable/ic_next" />
 </RelativeLayout>

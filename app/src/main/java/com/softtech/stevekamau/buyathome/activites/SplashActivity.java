@@ -17,18 +17,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.softtech.stevekamau.buyathome.R;
-import com.softtech.stevekamau.buyathome.app.AppController;
 import com.softtech.stevekamau.buyathome.helper.AccountSharedPreferences;
-
-import org.json.JSONArray;
 
 public class SplashActivity extends AppCompatActivity {
     TextView txt1, txt2;
-    String url2 = "http://snapt.t15.org/buyathome/all_products.php";
+    //String url2 = "http://snapt.t15.org/buyathome/all_products.php";
     String new_products, recommended_products, featured_products;
     int greenHeight = 0;
     com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar cp;
@@ -48,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
         txt1 = (TextView) findViewById(R.id.txt1);
         cp = (com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) findViewById(R.id.progressBar);
         cp.setCircleBackgroundEnabled(false);
-        cp.setColorSchemeResources(android.R.color.holo_green_light);
+        cp.setColorSchemeResources(R.color.green_color);
         mainRequest();
 
 
@@ -65,48 +62,61 @@ public class SplashActivity extends AppCompatActivity {
             finish();
 
         } else {
-            startActivity(new Intent(SplashActivity.this, Login.class));
+            Intent i = new Intent(getApplicationContext(), Login.class);
+            i.putExtra("main_data_response", response);
+            startActivity(i);
             finish();
         }
 
     }
 
     private void mainRequest() {
-        (findViewById(R.id.error)).setVisibility(View.INVISIBLE);
-        cp.setVisibility(View.VISIBLE);
-        // Creating volley request obj
-        final JsonArrayRequest productReq = new JsonArrayRequest(url2,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
 
-                        cp.setVisibility(View.INVISIBLE);
-                        Log.d("splash_screen_req", response.toString());
-                        System.out.print(response.toString());
-                        // Parsing json
-                        shp.setProductList(response.toString());
-                        loadMainData(response.toString());
-                    }
-                }, new Response.ErrorListener() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+
+        client.post(getResources().getString(R.string.server_url) + "all_products.php", params, new AsyncHttpResponseHandler() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                displayRetry();
-                cp.setVisibility(View.INVISIBLE);
-                (findViewById(R.id.error)).setVisibility(View.VISIBLE);
-                (findViewById(R.id.retry)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mainRequest();
-                    }
-                });
-                //
+            public void onStart() {
+                (findViewById(R.id.error)).setVisibility(View.INVISIBLE);
+                cp.setVisibility(View.VISIBLE);
             }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                String s = new String(responseBody);
+                Log.d("splash_screen_req", s);
+                System.out.print(s);
+                cp.setVisibility(View.INVISIBLE);
+                // Parsing json
+                shp.setProductList(s);
+                if (!s.equals("")) {
+                    loadMainData(s);
+                } else {
+                    displayRetry();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                displayRetry();
+
+            }
+
+
         });
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(productReq);
     }
 
     private void displayRetry() {
+        cp.setVisibility(View.INVISIBLE);
+        (findViewById(R.id.error)).setVisibility(View.VISIBLE);
+        (findViewById(R.id.retry)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainRequest();
+            }
+        });
+
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.cont);
         final LinearLayout ly = (LinearLayout) findViewById(R.id.linear);
         final ViewTreeObserver vto = layout.getViewTreeObserver();

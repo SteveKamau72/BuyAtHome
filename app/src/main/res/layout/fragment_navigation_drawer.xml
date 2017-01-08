@@ -13,7 +13,7 @@
             android:id="@+id/imageView6"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:background="@color/green_color"
+            android:background="@drawable/header_bg"
             android:scaleType="centerCrop"></ImageView>
 
         <ImageView
@@ -26,7 +26,7 @@
             android:layout_marginLeft="9dp"
             android:layout_marginStart="9dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/icon_person" />
+            android:src="@drawable/icon_person_2" />
 
         <com.ctrlplusz.anytextview.AnyTextView
             android:id="@+id/textView10"
@@ -36,7 +36,7 @@
             android:layout_marginTop="30dp"
             android:layout_toRightOf="@+id/imageView2"
             android:ellipsize="end"
-            android:shadowColor="#ccc"
+            android:shadowColor="#000"
             android:shadowRadius="1"
             android:singleLine="true"
             android:text="cdjhcvdc"
@@ -54,6 +54,8 @@
             android:layout_marginLeft="2dp"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
+            android:shadowColor="#000"
+            android:shadowRadius="1"
             android:singleLine="true"
             android:text="steve@g.com"
             android:textColor="#fff"
@@ -85,7 +87,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/linear"
+                android:id="@+id/cart"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
@@ -120,16 +122,16 @@
 
                 <TextView
                     android:id="@+id/num"
-                    android:layout_width="29dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_alignBaseline="@+id/textView6"
                     android:layout_alignBottom="@+id/textView6"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="40dp"
-                    android:layout_marginLeft="24dp"
+                    android:layout_marginLeft="30dp"
                     android:layout_marginRight="40dp"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_toRightOf="@+id/textView6"
                     android:background="@drawable/green_circle"
                     android:gravity="center"
                     android:text="0"
@@ -140,9 +142,11 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/linear2"
+                android:id="@+id/wishlist"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:background="@drawable/linear_layout_clicked"
+                android:clickable="true"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -170,16 +174,16 @@
 
                 <TextView
                     android:id="@+id/num2"
-                    android:layout_width="29dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_alignBaseline="@+id/txt"
                     android:layout_alignBottom="@+id/txt"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="40dp"
                     android:layout_marginLeft="24dp"
                     android:layout_marginRight="40dp"
                     android:layout_marginStart="24dp"
+                    android:layout_toRightOf="@+id/txt"
                     android:background="@drawable/red_circle"
                     android:gravity="center"
                     android:text="0"
@@ -193,7 +197,7 @@
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/linear2"
+                android:layout_below="@+id/wishlist"
                 android:background="#CCC" />
 
             <com.ctrlplusz.anytextview.AnyTextView

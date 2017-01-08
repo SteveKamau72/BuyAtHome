@@ -7,7 +7,7 @@
     tools:context="com.softtech.stevekamau.buyathome.activites.AddNewProduct"
     tools:showIn="@layout/activity_add_new_product">
 
-    <ScrollView
+    <com.softtech.stevekamau.buyathome.helper.VerticalScrollview
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -147,6 +147,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Recommended Product" />
+
+                <CheckBox
+                    android:id="@+id/discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hot Deal" />
+
+                <EditText
+                    android:id="@+id/discounted_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:gravity="start"
+                    android:hint="New Amount"
+                    android:inputType="phone"
+                    android:padding="10dp" />
             </LinearLayout>
 
             <TextView
@@ -211,5 +228,5 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp" />
         </LinearLayout>
-    </ScrollView>
+    </com.softtech.stevekamau.buyathome.helper.VerticalScrollview>
 </LinearLayout>

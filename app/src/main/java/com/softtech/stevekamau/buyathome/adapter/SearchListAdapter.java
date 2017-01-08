@@ -2,16 +2,21 @@ package com.softtech.stevekamau.buyathome.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.softtech.stevekamau.buyathome.R;
 import com.softtech.stevekamau.buyathome.app.AppController;
 import com.softtech.stevekamau.buyathome.model.Model;
@@ -30,11 +35,22 @@ public class SearchListAdapter extends BaseAdapter implements Filterable {
     private LayoutInflater inflater;
     private List<Model> modelItems;
     private int mDefaultImageId;
+    private DisplayImageOptions options;
 
     public SearchListAdapter(Activity activity, List<Model> modelItems) {
         this.activity = activity;
         this.modelItems = modelItems;
         mStringFilterList = modelItems;
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.product_placeholder)
+                .showImageForEmptyUri(R.drawable.product_placeholder)
+//                .displayer(new RoundedBitmapDisplayer(50))
+                .showImageOnFail(R.drawable.product_placeholder)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
     }
 
 
@@ -68,7 +84,7 @@ public class SearchListAdapter extends BaseAdapter implements Filterable {
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
-        NetworkImageView thumbNail = (NetworkImageView) convertView
+        ImageView thumbNail = (ImageView) convertView
                 .findViewById(R.id.thumbnail);
 
         TextView title = (TextView) convertView.findViewById(R.id.title);
@@ -78,24 +94,29 @@ public class SearchListAdapter extends BaseAdapter implements Filterable {
         title.setText(m.getName());
         desc.setText(m.getDetails());
         amount.setText(m.getAmount());
-        thumbNail.setImageUrl(m.getImage_url(), imageLoader);
-       /* // thumbnail image
-        thumbNail.setImageUrl(m.getThumbnailUrl(), imageLoader);
-        thumbNail.setTag(position);
-        // title
-        title.setText(m.getTitle());
 
-        // amount
-        rating.setText(String.valueOf(m.getRating()));
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance()
+                .displayImage(m.getImage_url(), thumbNail, options, new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
 
-        // description
-        String genreStr = "";
-        for (String str : m.getGenre()) {
-            genreStr += str + ", ";
-        }
-        genreStr = genreStr.length() > 0 ? genreStr.substring(0,
-                genreStr.length() - 2) : genreStr;
-        genre.setText(genreStr);*/
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+
+                    }
+                }, new ImageLoadingProgressListener() {
+                    @Override
+                    public void onProgressUpdate(String imageUri, View view, int current, int total) {
+
+                    }
+                });
+
 
         return convertView;
     }
@@ -115,19 +136,22 @@ public class SearchListAdapter extends BaseAdapter implements Filterable {
             if (constraint != null && constraint.length() > 0) {
                 ArrayList<Model> filterList = new ArrayList<Model>();
                 for (int i = 0; i < mStringFilterList.size(); i++)
-                    /*if ((mStringFilterList.get(i).getTitle().toUpperCase())
+                    if ((mStringFilterList.get(i).getName().toUpperCase())
                             .contains(constraint.toString().toUpperCase())) {
 
 
                         Model m = new Model(mStringFilterList.get(i)
-                                .getTitle(), mStringFilterList.get(i)
-                                .getThumbnailUrl(), mStringFilterList.get(i)
-                                .getRating(), mStringFilterList.get(i)
-                                .getGenre());
+                                .getId(), mStringFilterList.get(i)
+                                .getName(), mStringFilterList.get(i)
+                                .getImage_url(), mStringFilterList.get(i)
+                                .getAmount(), mStringFilterList.get(i)
+                                .getDetails(), mStringFilterList.get(i)
+                                .getTags(), mStringFilterList.get(i)
+                                .getRatings());
 
                         filterList.add(m);
-                    }*/
-                    results.count = filterList.size();
+                    }
+                results.count = filterList.size();
                 results.values = filterList;
             } else {
                 results.count = mStringFilterList.size();

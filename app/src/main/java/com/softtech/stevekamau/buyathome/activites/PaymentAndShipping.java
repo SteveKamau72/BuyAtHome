@@ -24,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.softtech.stevekamau.buyathome.Preferences;
 import com.softtech.stevekamau.buyathome.R;
@@ -35,6 +36,7 @@ public class PaymentAndShipping extends ActionBarActivity {
     TextView tvAmount;
     String total_amount, payment_details, shipping_details, s_phone, s_city, s_landmark, s_name, s_email;
     SharedPreferences sharedPreferences;
+    String constant;
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPhone, inputLayoutCity, inputLayoutLandMark;
     private EditText ed_phone, ed_city, ed_landmark, ed_name, ed_email;
 
@@ -61,47 +63,18 @@ public class PaymentAndShipping extends ActionBarActivity {
         total_amount = i.getStringExtra("total_amount");
         sharedPreferences = getSharedPreferences("ACCOUNT", MODE_PRIVATE);
 
+        getValuesFromSharedPreferences();
+
+        createViews();
+
+    }
+
+    private void getValuesFromSharedPreferences() {
         s_phone = sharedPreferences.getString("phone", "");
         s_city = sharedPreferences.getString("city", "");
         s_landmark = sharedPreferences.getString("landmark", "");
         s_name = sharedPreferences.getString("name", "");
         s_email = sharedPreferences.getString("email", "");
-
-        createViews();
-       /* tv1 = (TextView) findViewById(R.id.deliverTxt);
-        tv2 = (TextView) findViewById(R.id.selfcollectTxt);
-        tv3= (TextView) findViewById(R.id.mpesaTxt);
-        tv4= (TextView) findViewById(R.id.cashTxt);
-        final EditText editTill = (EditText) findViewById(R.id.editText);
-        editTill.setText("178850");
-        editTill.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        mpesa = (Button) findViewById(R.id.button4);
-        policy = (Button) findViewById(R.id.button3);
-        toVerification = (Button) findViewById(R.id.btnPayment);
-        toVerification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PaymentAndShipping.this, Verification.class);
-                intent.putExtra("Checked1",tv1.getText().toString());
-                intent.putExtra("Checked2",tv2.getText().toString());
-                intent.putExtra("Checked3",tv3.getText().toString());
-                intent.putExtra("Checked4",tv4.getText().toString());
-                startActivity(intent);
-            }
-        });
-        policy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deliverypolicyDialog();
-            }
-        });
-        mpesa.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                mpesaDialog();
-            }
-        });*/
     }
 
     private void createViews() {
@@ -116,11 +89,17 @@ public class PaymentAndShipping extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (payment_details != null && shipping_details != null) {
-                    Intent intent = new Intent(getApplicationContext(), VerifyInfo.class);
-                    intent.putExtra("payment_details", payment_details);
-                    intent.putExtra("shipping_details", shipping_details);
-                    intent.putExtra("total_amount", total_amount);
-                    startActivity(intent);
+                    if (!payment_details.equals("") || shipping_details.equals("")) {
+                        Intent intent = new Intent(getApplicationContext(), VerifyInfo.class);
+                        intent.putExtra("payment_details", payment_details);
+                        intent.putExtra("shipping_details", shipping_details);
+                        intent.putExtra("total_amount", total_amount);
+                        startActivity(intent);
+                    } else {
+                        showPersonalInfoDialog();
+                        Toast.makeText(PaymentAndShipping.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+
+                    }
                 } else {
                     if (payment_details == null) {
                         Snackbar.make(findViewById(android.R.id.content), "Please select a payment method", Snackbar.LENGTH_LONG)
@@ -132,6 +111,18 @@ public class PaymentAndShipping extends ActionBarActivity {
                     }
 
                 }
+            }
+        });
+        ((findViewById(R.id.button3))).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deliverypolicyDialog();
+            }
+        });
+        ((findViewById(R.id.button4))).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mpesaDialog();
             }
         });
     }
@@ -176,7 +167,7 @@ public class PaymentAndShipping extends ActionBarActivity {
                 if (ship_Checkbox.isChecked()) {
                     pick_Checkbox.setEnabled(false);
                     shipping_details = "Ship to me";
-                    showShippingDetails();
+                    showPersonalInfoDialog();
 
                 } else {
                     ship_Checkbox.setEnabled(true);
@@ -187,6 +178,7 @@ public class PaymentAndShipping extends ActionBarActivity {
                 if (pick_Checkbox.isChecked()) {
                     ship_Checkbox.setEnabled(false);
                     shipping_details = "I'll Collect Myself";
+                    showPersonalInfoDialog();
                 } else {
                     pick_Checkbox.setEnabled(true);
                     ship_Checkbox.setEnabled(true);
@@ -217,6 +209,8 @@ public class PaymentAndShipping extends ActionBarActivity {
     }
 
     public void showPersonalInfoDialog() {
+        constant = "personal";
+        getValuesFromSharedPreferences();
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.personal_details, null);
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -246,7 +240,30 @@ public class PaymentAndShipping extends ActionBarActivity {
 
         adb.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+
                 hideKeyboard(PaymentAndShipping.this);
+                if (ed_phone.getText().toString().trim().isEmpty()) {
+                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.err_msg_phone), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else if (ed_city.getText().toString().trim().isEmpty()) {
+                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.err_msg_city), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else if (ed_landmark.getText().toString().trim().isEmpty()) {
+                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.err_msg_city), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    //dialog.cancel();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("phone", ed_phone.getText().toString().trim());
+                    editor.putString("city", ed_city.getText().toString().trim());
+                    editor.putString("landmark", ed_landmark.getText().toString().trim());
+                    editor.apply();
+                    Snackbar.make(findViewById(android.R.id.content), "Personal details saved successfully!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+
+               /* hideKeyboard(PaymentAndShipping.this);
                 submitForm();
                 //dialog.cancel();
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -257,18 +274,20 @@ public class PaymentAndShipping extends ActionBarActivity {
                 editor.putString("landmark", ed_landmark.getText().toString().trim());
                 editor.apply();
                 Snackbar.make(findViewById(android.R.id.content), "Personal details saved successfully!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                        .setAction("Action", null).show();*/
             }
         });
         adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                hideKeyboard(PaymentAndShipping.this);
             }
         });
         adb.show();
     }
 
     private void showShippingDetails() {
+        constant = "shipping";
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.shipping_details, null);
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -297,22 +316,45 @@ public class PaymentAndShipping extends ActionBarActivity {
         adb.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-               /* */
                 hideKeyboard(PaymentAndShipping.this);
-                submitForm();
-                //dialog.cancel();
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("phone", ed_phone.getText().toString().trim());
-                editor.putString("city", ed_city.getText().toString().trim());
-                editor.putString("landmark", ed_landmark.getText().toString().trim());
-                editor.apply();
-                Snackbar.make(findViewById(android.R.id.content), "Shipping details saved successfully!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (ed_phone.getText().toString().trim().isEmpty()) {
+                    inputLayoutPhone.setError(getString(R.string.err_msg_phone));
+                    requestFocus(ed_phone);
+                    if (ed_city.getText().toString().trim().isEmpty()) {
+                        inputLayoutCity.setError(getString(R.string.err_msg_city));
+                        requestFocus(ed_city);
+                        if (ed_landmark.getText().toString().trim().isEmpty()) {
+                            inputLayoutLandMark.setError(getString(R.string.err_msg_landMark));
+                            requestFocus(ed_landmark);
+                            hideKeyboard(PaymentAndShipping.this);
+                            submitForm();
+                            //dialog.cancel();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("phone", ed_phone.getText().toString().trim());
+                            editor.putString("city", ed_city.getText().toString().trim());
+                            editor.putString("landmark", ed_landmark.getText().toString().trim());
+                            editor.apply();
+                            Snackbar.make(findViewById(android.R.id.content), "Shipping details saved successfully!", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+
+                        } else {
+                            inputLayoutLandMark.setErrorEnabled(false);
+                        }
+                    } else {
+                        inputLayoutCity.setErrorEnabled(false);
+                    }
+
+                } else {
+                    inputLayoutPhone.setErrorEnabled(false);
+                }
+               /* */
+
             }
         });
         adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                hideKeyboard(PaymentAndShipping.this);
             }
         });
         adb.show();

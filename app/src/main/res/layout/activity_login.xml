@@ -4,7 +4,7 @@
     xmlns:foobar="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_login"
+    android:background="@drawable/header_bg"
     android:gravity="top"
     android:orientation="vertical"
     android:padding="10dp">
@@ -25,7 +25,8 @@
             <LinearLayout
                 android:id="@+id/linear"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/txt1"
@@ -53,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="40dp"
                 android:gravity="center"
                 android:text="Your online shopping partner"
                 android:textColor="#277e3c" />
@@ -116,8 +117,9 @@
                 android:id="@+id/btnLinkToRegisterScreen"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@null"
-                android:text="@string/btn_link_to_register"
+                android:text="Don't have an account? Register now"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="15dp" />
@@ -151,21 +153,23 @@
                     android:background="#fff" />
             </RelativeLayout>
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content" />
-
-            <com.facebook.login.widget.LoginButton
+            <com.softtech.stevekamau.buyathome.helper.BtnFacebook
                 android:id="@+id/f_login_button"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="15dp" />
+                android:layout_marginTop="15dp"
+                android:text="Login with Facebook"
+                android:textSize="13dp" />
 
+            <com.softtech.stevekamau.buyathome.helper.BtnGoogleplus
+                android:id="@+id/sign_in_button"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Login with Google"
+                android:textSize="13dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

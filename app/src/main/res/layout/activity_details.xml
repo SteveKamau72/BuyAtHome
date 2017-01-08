@@ -1,11 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:foobar="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dedcdc"
-    tools:context="com.snappy.stevekamau.cosmeticsapp.MyBasket">
+    android:background="#dedcdc">
 
     <include
         android:id="@+id/app_bar"
@@ -62,7 +60,7 @@
                         android:padding="7dp"
                         android:src="@drawable/ic_action_favorite" />
 
-                    <com.android.volley.toolbox.NetworkImageView
+                    <ImageView
                         android:id="@+id/img1"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"

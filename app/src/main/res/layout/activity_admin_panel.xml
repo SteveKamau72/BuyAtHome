@@ -20,52 +20,145 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <RelativeLayout
+                android:id="@+id/notifications"
+                android:layout_width="wrap_content"
+                android:layout_height="140dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/accentColor"
+                android:onClick="onClick"
+                android:textColor="#fff">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/notif_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:text="Notifications"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/add"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
+                android:layout_height="140dp"
+                android:layout_weight="1"
+                android:background="@color/accentColor"
                 android:onClick="onClick"
-                android:layout_weight="1"
-                android:background="@drawable/more_button_drawable"
-                android:text="Add product"
-                android:textColor="#fff" />
+                android:textColor="#fff">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/more_button_drawable"
-                android:text="Edit product"
-                android:textColor="#fff" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/add_product_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Add product"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
             android:orientation="horizontal">
 
-            <Button
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="140dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/accentColor"
+                android:onClick="onClick"
+                android:textColor="#fff">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/edit_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:text="Edit Product"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/add_featured"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
+                android:layout_height="140dp"
                 android:layout_weight="1"
-                android:background="@drawable/more_button_drawable"
-                android:text="Add Featured"
-                android:textColor="#fff" />
+                android:background="@color/accentColor"
+                android:onClick="onClick"
+                android:textColor="#fff">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/more_button_drawable"
-                android:text="Edit"
-                android:textColor="#fff" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/stats_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:text="      Stats      "
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </RelativeLayout>
+
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

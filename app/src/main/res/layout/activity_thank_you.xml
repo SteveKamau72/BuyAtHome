@@ -11,39 +11,84 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.softtech.stevekamau.buyathome.activites.ThankYou">
 
-    <com.ctrlplusz.anytextview.AnyTextView
-        android:id="@+id/thank"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/amount"
-        android:gravity="center_horizontal"
-        android:maxLines="2"
-        android:text="Thank You "
-        android:textColor="@color/white"
-        android:textSize="40dp"
-        foobar:typeface="Gudea-Bold.ttf" />
+        android:orientation="vertical">
 
-    <com.ctrlplusz.anytextview.AnyTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/thank"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"
-        android:maxLines="2"
-        android:text="We will contact you shortly on your order"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        foobar:typeface="Gudea-Regular.ttf" />
 
-    <android.support.design.widget.FloatingActionButton
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/thank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:text="Thank you for shopping with us!"
+            android:textColor="@color/white"
+            android:textSize="40dp"
+            foobar:typeface="Gudea-Bold.ttf" />
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/thank"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:text="We will contact you shortly on your order"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            foobar:typeface="Gudea-Regular.ttf" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/white_bg"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.ctrlplusz.anytextview.AnyTextView
+                android:id="@+id/code_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
+                android:maxLines="2"
+                android:text="Your receipt code is:"
+                android:textColor="@color/accentColor"
+                android:textSize="20dp"
+                foobar:typeface="Gudea-Regular.ttf" />
+
+            <com.ctrlplusz.anytextview.AnyTextView
+                android:id="@+id/receipt_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/code_title"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:maxLines="2"
+                android:text="2016-12-17_23:09:55_obpekqaqdn"
+                android:textColor="@color/accentColor"
+                android:textSize="15dp"
+                foobar:typeface="Gudea-Bold.ttf" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_action_next" />
+        android:src="@drawable/ic_next" />
 </RelativeLayout>

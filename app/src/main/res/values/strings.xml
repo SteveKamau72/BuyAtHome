@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">BuyAtHome</string>
+    <string name="server_client_id">AIzaSyBRM59w2KLUvgelFT7g1XwKVq7-ejsUdTE</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -21,7 +22,7 @@
     <string name="hint_name">Full Name</string>
     <string name="btn_login">LOGIN</string>
     <string name="btn_register">REGISTER</string>
-    <string name="btn_link_to_register">Not a member? Sign up now.</string>
+    <string name="btn_link_to_register">Not a member? Register now.</string>
     <string name="btn_link_to_login">Already registered! Log Me in.</string>
     <string name="welcome">Welcome</string>
     <string name="btn_logout">LOGOUT</string>
@@ -63,7 +64,7 @@
     <string name="time_ago_year">about a year</string>
     <string name="time_ago_years">%d years</string>
     <string name="title_activity_cart">Cart</string>
-    <string name="title_activity_add_new_product">AddNewProduct</string>
+    <string name="title_activity_add_new_product">New Product</string>
 
     <string-array name="get_arrays">
         <!--<item>Voucher</item>
@@ -174,9 +175,42 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="err_msg_landMark">Enter nearest landmarl</string>
+    <string name="err_msg_landMark">Enter nearest landmark</string>
     <string name="err_msg_city">Enter your current city or town</string>
     <string name="err_msg_phone">Enter your phone number</string>
     <string name="err_msg_name">Enter your full name</string>
     <string name="err_msg_email">Please provide your email</string>
+    <string name="action_cart">Cart</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="delivery_policy">
+     <b>1. Delivery Notifications</b>\n
+      You will receive an email at the address you have specified when your order has been despatched - this email contains the tracking number/receipt number(if applicable) so you can confirm what is being delivered. You can also choose to have a delivery confirmation sent to your mobile phone via text message.
+        \n\n<b>2. Delivery timescales </b>\n
+      Next day delivery for items within Nairobi. This is a first in delivery e-commerce in Kenya and applies to any orders confirmed before 2:00pm on business days.For all other regions, BuyAtHome strives to deliver your product within 2-5 business days. BuyAtHome aims to deliver your products within 7 days from the time of order confirmation For all products, our customer service agents will inform you of the expected delivery timeline when confirming your order.
+\n\n
+     <b>3. Postage method </b>\n
+        Optionally, you can choose to have your ordered delivered though POSTA for an additional charge that will include the postage charges. The amounts will be communicated to you when you make your order.
+\n\n
+     <b>4. Missed deliveries </b>\n
+        If you are not in to receive the delivery at the time the delivery is attempted, we will notify you of the missed delivery attempt. This will allow you to either telephone us to arrange a redelivery at a more convenient time.
+        If for any reason the item is returned to us (e.g. incorrect address specified, item not called for), then BuyAtHome will inform you immediately by email as soon as we receive the item.  From this point forth, you will be given a choice whether you wish us to redespatch the item or for you to cancel the order.  Please note that for items that were undelivered through fault of the consumer and a refund is requested, BuyAtHome reserve the right to deduct our outwardly shipping fees from the refund total.
+\n\n
+     <b>5. Late deliveries or despatch</b>\n
+        In rare circumstances our shipping capacity can be exceeded and cause a delay of one extra day. BuyAtHome regrets that this situation can occur occasionally, and is an unfortunate situation which is naturally associated with buying online, however this only occurs in rare situations and, should this occur, your order is marked for urgent delivery the following day.
+        The other circumstance which may cause a delay is when the delivery service itself has a problem.  This, again, is a rare situation but is unfortunately beyond our control.  In these situations, BuyAtHome will do our very best to take responsibility for the situation and ensure that your order is delivered as quickly as possible.
+\n\n
+     <b>5.1 Consequential loss for late deliveries</b>\n
+        If a delivery is late, e.g. the postal service fails to deliver within the guaranteed timescale, then BuyAtHome will provide a refund of any delivery charges that were charged to you.  If the delivery was free, Watch Shop and Watch Shop Logistics Ltd do not provide financial compensation to cover consequential losses, e.g. Time taken off work to receive deliveries, or the item is intended as a gift, and you purchase the same item from a more expensive retailer.
+\n\n
+     <b>6. Delivery to business addresses</b>\n
+        BuyAtHome allows delivery to alternate delivery addresses including business addresses and places of work. If you do specify a business address for delivery, please ensure that there will be someone available during normal working hours e.g. at reception who can sign for delivery on your behalf.
+    </string>
+
+    <!-- BuyAtHome promises to provide you with the best-in-class shopping experience at every step of
+     the way. We assure you that all due precautions are taken so that your package are delivered to
+     you intact and on time by our delivery partner. Just proceed with your order and we’ll do the
+     rest. In case you face any difficulty, you can email us anytime at buyathome2015@gmail.com or
+     call us at +254711219490-->
+    <string name="server_url">http://nickmuthumbi.com/buyathome/server_scripts/</string>
 </resources>

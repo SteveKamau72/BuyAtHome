@@ -28,7 +28,6 @@ import com.softtech.stevekamau.buyathome.activites.Login;
 import com.softtech.stevekamau.buyathome.activites.WishList;
 import com.softtech.stevekamau.buyathome.databaseHandlers.CartDB;
 import com.softtech.stevekamau.buyathome.databaseHandlers.WishDB;
-import com.softtech.stevekamau.buyathome.helper.SQLiteHandler;
 import com.softtech.stevekamau.buyathome.helper.SessionManager;
 import com.softtech.stevekamau.buyathome.interfaces.UpdateCartCount;
 
@@ -47,7 +46,7 @@ public class NavigationDrawerFragment extends Fragment {
     public static final String PREF_FILE_NAME = "testpref";
     public static final String KEY_USER_LEARNED_DRAWER = "user_learned_drawer";
     CartDB myDb;
-    WishDB favDB;
+    WishDB wishListDB;
     View layout;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -56,10 +55,9 @@ public class NavigationDrawerFragment extends Fragment {
     private View containerView;
     private AdapterClass adapter;
     private RecyclerView recyclerView;
-    private TextView txtName;
-    private TextView txtEmail;
+    private TextView txtName, txtEmail, txt, txt2;
     private TextView welcome;
-    private SQLiteHandler db;
+    private CartDB db;
     private SessionManager session;
     private FragmentDrawerListener drawerListener;
 
@@ -117,16 +115,19 @@ public class NavigationDrawerFragment extends Fragment {
         EventBus.getDefault().register(this);
         layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
-        layout.findViewById(R.id.linear).setOnClickListener(new View.OnClickListener() {
+
+        layout.findViewById(R.id.cart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDrawerLayout.closeDrawer(containerView);
                 Intent i = new Intent(getActivity(), Cart.class);
                 startActivity(i);
             }
         });
-        layout.findViewById(R.id.linear2).setOnClickListener(new View.OnClickListener() {
+        layout.findViewById(R.id.wishlist).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDrawerLayout.closeDrawer(containerView);
                 Intent i = new Intent(getActivity(), WishList.class);
                 startActivity(i);
             }
@@ -139,47 +140,36 @@ public class NavigationDrawerFragment extends Fragment {
         adapter = new AdapterClass(getActivity(), getData());
         recyclerView.setAdapter(adapter);
         myDb = new CartDB(getActivity());
-        favDB = new WishDB(getActivity());
+        wishListDB = new WishDB(getActivity());
 
-        TextView txt = (TextView) layout.findViewById(R.id.num);
-        TextView txt2 = (TextView) layout.findViewById(R.id.num2);
-        int profile_counts = myDb.numberOfRows();
-        myDb.close();
-        if (profile_counts > 0) {
-            txt.setText(String.valueOf(profile_counts));
-        } else {
-            txt.setVisibility(View.INVISIBLE);
-        }
-        int profile_counts2 = favDB.numberOfRows();
-        favDB.close();
-        if (profile_counts2 > 0) {
-            txt2.setText(String.valueOf(profile_counts2));
-        } else {
-            txt2.setVisibility(View.INVISIBLE);
-        }
+        txt = (TextView) layout.findViewById(R.id.num);
+        txt2 = (TextView) layout.findViewById(R.id.num2);
+        cartItemsCount();
+        wishListItemsCount();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                AdapterClass.selected_item = position;
-                recyclerView.getAdapter().notifyDataSetChanged();
-                drawerListener.onDrawerItemSelected(view, position);
-                mDrawerLayout.closeDrawer(containerView);
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView,
+                new ClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        AdapterClass.selected_item = position;
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                        drawerListener.onDrawerItemSelected(view, position);
+                        mDrawerLayout.closeDrawer(containerView);
 
-            }
+                    }
 
-            @Override
-            public void onLongClick(View view, int position) {
+                    @Override
+                    public void onLongClick(View view, int position) {
 
-            }
-        }));
+                    }
+                }));
 
         txtName = (TextView) layout.findViewById(R.id.textView10);
         txtEmail = (TextView) layout.findViewById(R.id.textView11);
         welcome = (TextView) layout.findViewById(R.id.textView12);
-        db = new SQLiteHandler(getActivity());
+        db = new CartDB(getActivity());
         if (!getstatus()) {
             Intent intent = new Intent(getContext(), Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -261,15 +251,8 @@ public class NavigationDrawerFragment extends Fragment {
     // This method will be called when a MessageEvent is posted (in the UI thread for Toast)
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdateCartCount event) {
-        TextView txt = (TextView) layout.findViewById(R.id.num);
-        int profile_counts = myDb.numberOfRows();
-        myDb.close();
-        if (profile_counts > 0) {
-            txt.setText(String.valueOf(profile_counts));
-        } else {
-            txt.setVisibility(View.INVISIBLE);
-        }
-
+        cartItemsCount();
+        wishListItemsCount();
     }
 
     @Override
@@ -280,12 +263,32 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TextView txt = (TextView) layout.findViewById(R.id.num);
-        int profile_counts = myDb.numberOfRows();
+        cartItemsCount();
+        wishListItemsCount();
+
+    }
+
+    private void wishListItemsCount() {
+        int counts = wishListDB.numberOfRows();
+        wishListDB.close();
+        if (counts > 0) {
+            Log.d("on_resume_frag_w", "true" + String.valueOf(counts));
+            txt2.setText(String.valueOf(counts));
+            txt2.setVisibility(View.VISIBLE);
+        } else {
+            txt2.setVisibility(View.INVISIBLE);
+            Log.d("on_resume_frag_w", "true1");
+
+        }
+    }
+
+    private void cartItemsCount() {
+        int counts = myDb.numberOfRows();
         myDb.close();
-        if (profile_counts > 0) {
-            Log.d("on_resume_frag", "true"+String.valueOf(profile_counts));
-            txt.setText(String.valueOf(profile_counts));
+        if (counts > 0) {
+            Log.d("on_resume_frag", "true" + String.valueOf(counts));
+            txt.setText(String.valueOf(counts));
+            txt.setVisibility(View.VISIBLE);
         } else {
             txt.setVisibility(View.INVISIBLE);
             Log.d("on_resume_frag", "true1");

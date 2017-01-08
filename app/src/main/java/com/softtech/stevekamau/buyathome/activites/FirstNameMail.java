@@ -11,14 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softtech.stevekamau.buyathome.R;
-import com.softtech.stevekamau.buyathome.helper.SQLiteHandler;
+import com.softtech.stevekamau.buyathome.databaseHandlers.CartDB;
 
 /**
  * Created by steve on 9/17/15.
  */
 public class FirstNameMail extends AppCompatActivity {
     EditText ed1, ed2, ed3;
-    private SQLiteHandler db;
+    private CartDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class FirstNameMail extends AppCompatActivity {
         ed1 = (EditText) findViewById(R.id.e1);
         ed2 = (EditText) findViewById(R.id.e3);
 
-        db = new SQLiteHandler(getApplicationContext());
+        db = new CartDB(getApplicationContext());
     }
 
     @Override

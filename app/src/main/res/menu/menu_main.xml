@@ -30,10 +30,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/badge"
-        android:actionLayout="@layout/feed_update_count"
-        android:icon="@drawable/shape_notification"
-        android:title="@string/action_refresh"
-        app:showAsAction="always"></item>
+        android:id="@+id/action_cart"
+        android:icon="@drawable/ic_menu_cart"
+        android:title="@string/action_cart"
+        app:showAsAction="always" />
 
 </menu>

@@ -1,8 +1,8 @@
 package com.softtech.stevekamau.buyathome.activites;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +21,7 @@ public class AdminPanel extends AppCompatActivity {
         setSupportActionBar(toolbar);
         TextView mToolBarTextView = (TextView) findViewById(R.id.text_view_toolbar_title);
         mToolBarTextView.setText("Admin Panel");
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -36,6 +35,9 @@ public class AdminPanel extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.add:
                 startActivity(new Intent(getApplicationContext(), AddNewProduct.class));
+                break;
+            case R.id.notifications:
+                startActivity(new Intent(getApplicationContext(), PurchasesList.class));
                 break;
         }
     }

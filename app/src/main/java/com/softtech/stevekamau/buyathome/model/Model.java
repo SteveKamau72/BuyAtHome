@@ -1,7 +1,5 @@
 package com.softtech.stevekamau.buyathome.model;
 
-import java.util.ArrayList;
-
 /**
  * Created by Steve Kamau on 11-Mar-15.
  */
@@ -13,6 +11,16 @@ public class Model {
     }
 
     public Model(String name, String amount, String image_url, String details, String tags, int id, int ratings) {
+        this.name = name;
+        this.amount = amount;
+        this.image_url = image_url;
+        this.details = details;
+        this.tags = tags;
+        this.id = id;
+        this.ratings = ratings;
+    }
+
+    public Model(int id, String name, String image_url, String amount, String details, String tags, int ratings) {
         this.name = name;
         this.amount = amount;
         this.image_url = image_url;

@@ -11,9 +11,8 @@
     <ImageView
         android:id="@+id/basket"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
         android:src="@drawable/empty_wishlist" />
 
     <com.ctrlplusz.anytextview.AnyTextView
@@ -36,7 +35,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Don't forget to dream a little. Add your favourites here!"
+        android:text="Don't forget to dream a little. Add your wishlist here!"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#a3a2a2"
         android:textSize="20dp"
@@ -54,10 +53,7 @@
             android:layout_marginBottom="19dp"
             android:layout_marginEnd="19dp"
             android:layout_marginRight="19dp"
-            android:src="@drawable/ic_fab_add"
-            fab:fab_colorNormal="@color/accentColor"
-            fab:fab_colorPressed="@color/accentColor_pressed"
-            fab:fab_colorRipple="@color/ripple" />
+            android:src="@drawable/ic_fab_add" />
     </FrameLayout>
 
 </RelativeLayout>

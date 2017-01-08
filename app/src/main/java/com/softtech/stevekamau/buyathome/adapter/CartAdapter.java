@@ -2,11 +2,9 @@ package com.softtech.stevekamau.buyathome.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +12,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.softtech.stevekamau.buyathome.R;
-import com.softtech.stevekamau.buyathome.databaseHandlers.CartDB;
 import com.softtech.stevekamau.buyathome.helper.ItemTouchHelperAdapter;
 import com.softtech.stevekamau.buyathome.helper.ItemTouchHelperViewHolder;
 import com.softtech.stevekamau.buyathome.interfaces.CartInterFace;
@@ -35,11 +36,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ItemViewHolder
     private final Context context;
     CartInterFace ci;
     private TextView tvNumber;
+    private DisplayImageOptions options;
+
 
     public CartAdapter(CartInterFace ci, Context context, List<CartModel> itemList) {
         this.context = context;
         this.itemList = itemList;
         this.ci = ci;
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.product_placeholder)
+                .showImageForEmptyUri(R.drawable.product_placeholder)
+//                .displayer(new RoundedBitmapDisplayer(50))
+                .showImageOnFail(R.drawable.product_placeholder)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
 
     }
 
@@ -54,41 +67,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ItemViewHolder
         notifyItemRangeChanged(0, getItemCount());
         tvNumber.setText(String.valueOf(itemList.size()));
 
-       /* final Snackbar snackbar = Snackbar
-
-                .make(tvNumber, context.getResources().getString(R.string.item_deleted), Snackbar.LENGTH_LONG)
-                .setActionTextColor(ContextCompat.getColor(context, R.color.white))
-                .setAction(context.getResources().getString(R.string.item_undo), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        itemList.add(position, item);
-                        notifyItemInserted(position);
-                        tvNumber.setText(String.valueOf(itemList.size()));
-
-                    }
-                });
-
-
-        View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
-        TextView tvSnack = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-        TextView tvSnackAction = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_action);
-        tvSnack.setTextColor(Color.WHITE);
-        tvSnack.setTypeface(Typefaces.getGudeaMedium(context));
-        tvSnackAction.setTypeface(Typefaces.getGudeaMedium(context));
-        snackbar.show();
-
-
-        Runnable runnableUndo = new Runnable() {
-
-            @Override
-            public void run() {
-                tvNumber.setText(String.valueOf(itemList.size()));
-                snackbar.dismiss();
-            }
-        };
-        Handler handlerUndo = new Handler();
-        handlerUndo.postDelayed(runnableUndo, 2500);*/
     }
 
     @Override
@@ -131,14 +109,32 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ItemViewHolder
 
         itemViewHolder.tvAmount.setText("kshs. " + formatter.format(amount));
 
-        byte[] decodedString = Base64.decode(item.getImageFromPath(), Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        //download from the url
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance()
+                .displayImage(item.getImageFromPath(), itemViewHolder.itemImage, options, new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
 
-        itemViewHolder.itemImage.setImageBitmap(decodedByte);
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+
+                    }
+                }, new ImageLoadingProgressListener() {
+                    @Override
+                    public void onProgressUpdate(String imageUri, View view, int current, int total) {
+
+                    }
+                });
         itemViewHolder.imgButon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteItem(position,item.getId());
+                deleteItem(position, item.getId());
                /* CartDB cartDB = new CartDB(context);
                 cartDB.deleteSingleCartItem(item.getId());*/
             }
@@ -234,7 +230,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ItemViewHolder
 
             int position = (int) editText.getTag(R.id.quantity);
             final CartModel item = itemList.get(position);
-            if (s.toString().length()>0) {
+            if (s.toString().length() > 0) {
                 (ci).onQuantityChanged(position, s.toString(), item.getAmount(), item.getId());
             }
             //position, s.toString(),item.getAmount(),item.getId()

@@ -84,10 +84,6 @@
         "source": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0/res/drawable-xhdpi/abc_ic_ab_back_mtrl_am_alpha.png"
     },
     {
-        "merged": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/res/merged/release/drawable-xhdpi-v4/abc_list_selector_disabled_holo_light.9.png",
-        "source": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0/res/drawable-xhdpi/abc_list_selector_disabled_holo_light.9.png"
-    },
-    {
         "merged": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/res/merged/release/drawable-xhdpi-v4/abc_list_divider_mtrl_alpha.9.png",
         "source": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0/res/drawable-xhdpi/abc_list_divider_mtrl_alpha.9.png"
     },
@@ -98,6 +94,10 @@
     {
         "merged": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/res/merged/release/drawable-xhdpi-v4/abc_ic_menu_copy_mtrl_am_alpha.png",
         "source": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0/res/drawable-xhdpi/abc_ic_menu_copy_mtrl_am_alpha.png"
+    },
+    {
+        "merged": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/res/merged/release/drawable-xhdpi-v4/abc_list_selector_disabled_holo_light.9.png",
+        "source": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0/res/drawable-xhdpi/abc_list_selector_disabled_holo_light.9.png"
     },
     {
         "merged": "/home/steve/MyStuff/Development/Projects/Android/Done/BuyAtHome/dialogLibrary/build/intermediates/res/merged/release/drawable-xhdpi-v4/abc_list_pressed_holo_light.9.png",

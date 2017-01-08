@@ -16,23 +16,26 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.dd.processbutton.iml.ActionProcessButton;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.softtech.stevekamau.buyathome.R;
 
@@ -55,8 +58,12 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Login extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -66,15 +73,19 @@ public class Login extends AppCompatActivity implements
                     + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" + "(" + "\\."
                     + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" + ")+");
     public static final String FIREBASE_URL = "https://buyathome-cc661.firebaseio.com/";
-    private static final int RC_SIGN_IN = 9001;
+    private static final int RC_SIGN_IN = 007;
     private static final String TAG = "Login";
     EditText ed_email, ed_password;
+    SweetAlertDialog pDialog;
     String email, password;
     String s_name, products_jArray;
     Boolean success;
     View view;
     CallbackManager callbackManager;
     ActionProcessButton button;
+    com.softtech.stevekamau.buyathome.helper.BtnFacebook loginButton;
+    com.softtech.stevekamau.buyathome.helper.BtnGoogleplus gmail_btn;
+    String main_data_response;
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
 
@@ -89,94 +100,102 @@ public class Login extends AppCompatActivity implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Intent i = getIntent();
+        main_data_response = i.getStringExtra("main_data_response");
+
+        //facebook sign in
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-       // final Firebase ref = new Firebase(FIREBASE_URL);
+
+        // final Firebase ref = new Firebase(FIREBASE_URL);
         callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.f_login_button);
-        loginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email"));
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        loginButton = (com.softtech.stevekamau.buyathome.helper.BtnFacebook) findViewById(R.id.f_login_button);
 
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d("Success", "Login");
+                        String result = "User ID: "
+                                + loginResult.getAccessToken().getUserId()
+                                + "\n" +
+                                "Auth Token: "
+                                + loginResult.getAccessToken().getToken();
+                        Log.d("facebook", result);
+
+                        Snackbar.make(findViewById(android.R.id.content), result, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+
+                        // Facebook Email address
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(
+                                            JSONObject object,
+                                            GraphResponse response) {
+                                        Log.v("LoginActivity Response ", response.toString());
+
+                                        try {
+                                            String Name = object.getString("name");
+
+                                            String FEmail = object.getString("email");
+                                            Log.v("Email = ", " " + FEmail);
+
+                                            SharedPreferences sharedPreferences = getSharedPreferences("ACCOUNT", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.putString("name", Name);
+                                            editor.putString("email", FEmail);
+                                            editor.putBoolean("islogged", true);
+                                            editor.putBoolean("isemail", false);
+                                            editor.putBoolean("isfacebook", true);
+                                            editor.putBoolean("isgoogle", false);
+                                            editor.apply();
+
+                                            registerSocialUsers(Name, FEmail, "");
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,email,gender");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Snackbar.make(findViewById(android.R.id.content), "Could not connect, please retry later", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        Snackbar.make(findViewById(android.R.id.content), "Could not connect, please retry later", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                });
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-
-                String result = "User ID: "
-                        + loginResult.getAccessToken().getUserId()
-                        + "\n" +
-                        "Auth Token: "
-                        + loginResult.getAccessToken().getToken();
-                Log.d("facebook", result);
-                Snackbar.make(findViewById(android.R.id.content), result, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-
-                AccessToken accessToken = loginResult.getAccessToken();
-                Profile profile = Profile.getCurrentProfile();
-
-                // Facebook Email address
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
-                                Log.v("LoginActivity Response ", response.toString());
-
-                                try {
-                                    String Name = object.getString("name");
-
-                                    String FEmail = object.getString("email");
-                                    Log.v("Email = ", " " + FEmail);
-
-                                    SharedPreferences sharedPreferences = getSharedPreferences("ACCOUNT", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString("name", Name);
-                                    editor.putString("email", FEmail);
-                                    editor.putBoolean("islogged", true);
-                                    editor.putBoolean("isemail", false);
-                                    editor.putBoolean("isfacebook", true);
-                                    editor.putBoolean("isgoogle", false);
-                                    editor.apply();
-                                    Intent intent = new Intent(Login.this, MainActivity.class);
-                                    intent.putExtra("message", s_name);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                    finish();
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender, birthday");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile", "email"));
             }
         });
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+        //google sign in
+        gmail_btn = (com.softtech.stevekamau.buyathome.helper.BtnGoogleplus) findViewById(R.id.sign_in_button);
+        gmail_btn.setOnClickListener(this);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setScopes(gso.getScopeArray());
 
         ed_email = (EditText) findViewById(R.id.email);
         ed_password = (EditText) findViewById(R.id.password);
@@ -212,7 +231,9 @@ public class Login extends AppCompatActivity implements
         (findViewById(R.id.btnLinkToRegisterScreen)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Register.class));
+                Intent i = new Intent(getApplicationContext(), Register.class);
+                i.putExtra("main_data_response", main_data_response);
+                startActivity(i);
                 finish();
             }
         });
@@ -224,6 +245,7 @@ public class Login extends AppCompatActivity implements
     }
 
     private void signIn() {
+        loadingDialog();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
@@ -233,6 +255,7 @@ public class Login extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -246,6 +269,7 @@ public class Login extends AppCompatActivity implements
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             Log.d(TAG, "handleSignInResult:" + acct.getEmail() + acct.getDisplayName());
+            login(acct.getDisplayName(), "");
             SharedPreferences sharedPreferences = getSharedPreferences("ACCOUNT", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("name", acct.getDisplayName());
@@ -255,22 +279,36 @@ public class Login extends AppCompatActivity implements
             editor.putBoolean("isfacebook", false);
             editor.putBoolean("isgoogle", true);
             editor.apply();
-            Intent intent = new Intent(Login.this, MainActivity.class);
-            intent.putExtra("message", s_name);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            registerSocialUsers(acct.getDisplayName(), acct.getEmail(), "");
         } else {
+            pDialog.dismissWithAnimation();
             Snackbar.make(findViewById(android.R.id.content), "Something went wrong, retry later", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
+    }
+
+    private void loadingDialog() {
+        pDialog = new SweetAlertDialog(Login.this, SweetAlertDialog.PROGRESS_TYPE)
+                .setTitleText("Signing in...");
+        pDialog.show();
+        pDialog.setCancelable(false);
+        pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.green_color));
+    }
+
+    private void startMainActivity(String displayName) {
+        Intent intent = new Intent(Login.this, MainActivity.class);
+        intent.putExtra("message", displayName);
+        intent.putExtra("main_data_response", main_data_response);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void login(final String email, String password) {
 
         class LoginAsync extends AsyncTask<String, Void, String> {
 
-            String login_url = "http://snapt.t15.org/buyathome/login.php";
+            private String login_url = getResources().getString(R.string.server_url) + "login.php";
             private Dialog loadingDialog;
 
             //String login_url = "http://10.0.3.2/buyathome/userdetails/login.php";
@@ -350,12 +388,7 @@ public class Login extends AppCompatActivity implements
                         editor.putBoolean("isgoogle", false);
                         editor.putBoolean("isemail", true);
                         editor.apply();
-                        Intent intent = new Intent(Login.this, MainActivity.class);
-                        intent.putExtra("message", s_name);
-                        intent.putExtra("main_data_response", products_jArray);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
+                        startMainActivity(s_name);
                     } else {
                         button.setProgress(0);
                         Snackbar.make(findViewById(android.R.id.content), "Invalid email or password", Snackbar.LENGTH_LONG)
@@ -371,6 +404,41 @@ public class Login extends AppCompatActivity implements
 
     }
 
+    public void registerSocialUsers(final String displayName, final String email, final String s) {
+        loadingDialog();
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                getResources().getString(R.string.server_url) + "register.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("response_regis", response);
+                        pDialog.dismissWithAnimation();
+                        startMainActivity(displayName);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("response_regis", error.toString());
+                        pDialog.dismissWithAnimation();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("user", displayName);
+                params.put("user_email", email);
+                params.put("user_pass", s);
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -382,6 +450,7 @@ public class Login extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        pDialog.dismissWithAnimation();
         Snackbar.make(findViewById(android.R.id.content), "Could not connect, please retry later", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }

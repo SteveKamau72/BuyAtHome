@@ -65,7 +65,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/feat"
                         android:layout_width="wrap_content"
-                        android:layout_height="240dp"
+                        android:layout_height="270dp"
                         android:layout_marginTop="40dp" />
 
                     <com.ctrlplusz.anytextview.AnyTextView
@@ -153,6 +153,43 @@
                         android:layout_width="wrap_content"
                         android:layout_height="200dp"
                         android:layout_below="@+id/recom" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/hotdeals_btn"
+                        android:layout_width="45dp"
+                        android:layout_height="22dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/more_button_drawable"
+                        android:text="More"
+                        android:textColor="#fff"
+                        android:textSize="10dp" />
+
+                    <com.ctrlplusz.anytextview.AnyTextView
+                        android:id="@+id/hotdeals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Hot deals for you"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        foobar:typeface="Gudea-Bold.ttf" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/hot_dealsrv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="180dp"
+                        android:layout_below="@+id/hotdeals" />
                 </RelativeLayout>
 
                 <ImageView

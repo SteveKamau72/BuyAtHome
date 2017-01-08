@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:foobar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_purchase_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.softtech.stevekamau.buyathome.activites.PurchaseDetails">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/imageContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/accent_icon" />
+
+            <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/linear"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:visibility="invisible"
+                foobar:mlpb_enable_circle_background="false"
+                foobar:mlpb_progress_color="@color/white" />
+        </RelativeLayout>
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/imageContainer"
+            android:text="Steve Kamau"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            foobar:typeface="Gudea-Regular.ttf" />
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/time_stamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginBottom="5dip"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/imageContainer"
+            android:text="tue 12 march 2016"
+            android:textColor="@color/darker_gray"
+            android:textSize="14sp"
+            foobar:typeface="Gudea-Regular.ttf" />
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/receipt_Code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/time_stamp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/imageContainer"
+            android:text="tue 12 march 2016"
+            android:textColor="@color/accentColor"
+            android:textSize="14sp"
+            foobar:typeface="Gudea-Regular.ttf" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <android.support.v7.widget.RecyclerView
+
+                android:id="@+id/notifList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/app_bar"
+                android:layout_gravity="center_horizontal|top"
+                android:elevation="3dp" />
+            <!--contact-->
+            <RelativeLayout
+                android:id="@+id/contact"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel4"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:paddingLeft="5dp">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="50dp"
+                    android:maxLines="3"
+                    android:text="Dummy text"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/phone"
+                    android:layout_below="@+id/phone"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Tap to contact"
+                    android:textColor="@color/darker_gray"
+                    android:textSize="14sp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+                    android:src="@android:drawable/ic_menu_call" />
+            </RelativeLayout>
+            <!--email-->
+            <RelativeLayout
+                android:id="@+id/email"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel4"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:paddingLeft="5dp">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/txt_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="50dp"
+                    android:maxLines="3"
+                    android:text="Dummy text"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/txt_email"
+                    android:layout_below="@+id/txt_email"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Tap to email"
+                    android:textColor="@color/darker_gray"
+                    android:textSize="14sp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+                    android:src="@android:drawable/ic_dialog_email" />
+            </RelativeLayout>
+            <!--payment mode-->
+            <RelativeLayout
+                android:id="@+id/payment"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel4"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:paddingLeft="5dp">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/txt_payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="50dp"
+                    android:maxLines="3"
+                    android:text="Dummy text"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/txt_payment"
+                    android:layout_below="@+id/txt_payment"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Payment mode"
+                    android:textColor="@color/darker_gray"
+                    android:textSize="14sp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+                    android:src="@android:drawable/ic_menu_info_details" />
+            </RelativeLayout>
+            <!--shipping mode-->
+
+            <RelativeLayout
+                android:id="@+id/shipping"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel4"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:paddingLeft="5dp">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/txt_shipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="50dp"
+                    android:maxLines="3"
+                    android:text="Dummy text"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/txt_shipping"
+                    android:layout_below="@+id/txt_shipping"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Shipping mode"
+                    android:textColor="@color/darker_gray"
+                    android:textSize="14sp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+                    android:src="@android:drawable/ic_dialog_info" />
+            </RelativeLayout>
+            <!--landmark-->
+
+            <RelativeLayout
+                android:id="@+id/landmark"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel4"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:paddingLeft="5dp">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/txt_landmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="50dp"
+                    android:maxLines="3"
+                    android:text="Dummy text"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/txt_landmark"
+                    android:layout_below="@+id/txt_landmark"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Nearest landmark"
+                    android:textColor="@color/darker_gray"
+                    android:textSize="14sp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+                    android:src="@android:drawable/ic_menu_compass" />
+            </RelativeLayout>
+            <!--city-->
+
+            <RelativeLayout
+                android:id="@+id/city"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel4"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:paddingLeft="5dp">
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:id="@+id/txt_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="50dp"
+                    android:maxLines="3"
+                    android:text="Dummy text"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <com.ctrlplusz.anytextview.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/txt_city"
+                    android:layout_below="@+id/txt_city"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="5dip"
+                    android:text="City"
+                    android:textColor="@color/darker_gray"
+                    android:textSize="14sp"
+                    foobar:typeface="Gudea-Regular.ttf" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+                    android:src="@android:drawable/ic_dialog_map" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

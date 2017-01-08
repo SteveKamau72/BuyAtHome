@@ -156,19 +156,23 @@
         </RelativeLayout>
     </ScrollView>
 
-
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/clayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_action_next" />
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_next_small" />
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </RelativeLayout>

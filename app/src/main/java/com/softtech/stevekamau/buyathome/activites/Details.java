@@ -7,16 +7,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -26,17 +27,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.softtech.stevekamau.buyathome.Preferences;
 import com.softtech.stevekamau.buyathome.R;
 import com.softtech.stevekamau.buyathome.TopExceptionHandler;
@@ -44,7 +43,9 @@ import com.softtech.stevekamau.buyathome.adapter.ReviewsAdapter;
 import com.softtech.stevekamau.buyathome.app.AppController;
 import com.softtech.stevekamau.buyathome.databaseHandlers.CartDB;
 import com.softtech.stevekamau.buyathome.databaseHandlers.WishDB;
+import com.softtech.stevekamau.buyathome.helper.BadgeDrawable;
 import com.softtech.stevekamau.buyathome.helper.TimeAgo;
+import com.softtech.stevekamau.buyathome.helper.UniversalImageLoader;
 import com.softtech.stevekamau.buyathome.model.ReviewModel;
 
 import org.json.JSONArray;
@@ -55,16 +56,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import cz.msebera.android.httpclient.ParseException;
 
 
 public class Details extends ActionBarActivity {
@@ -72,19 +71,25 @@ public class Details extends ActionBarActivity {
     static int mNotifCount = 0;
     CartDB cartDB;
     WishDB wishDB;
-    TextView title, amount, description, number_reviews, add_review;
+    TextView title, tvAmount, description, number_reviews, add_review;
     int id_To_Update = 0;
-    NetworkImageView thumbNail;
+    ImageView thumbNail;
+    NetworkImageView img2, img3, img4;
     ImageLoader imageLoader;
-    String bitmap, p_id, message, url;
+    String bitmap, message, url, rating;
     EditText review_input;
+    int p_id;
     Context context;
     ReviewsAdapter ra;
     RecyclerView rv;
     int profile_counts;
     String s_name, s_amount, s_description;
     com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar circularbar, recyc_bar;
-    MenuItem item;
+    MenuItem itemCart;
+    RatingBar pop_ratingbar;
+    LayerDrawable icon;
+    String count;
+    SweetAlertDialog pDialog;
     private List<ReviewModel> reviewmodelList = new ArrayList<>();
 
     @Override
@@ -104,73 +109,88 @@ public class Details extends ActionBarActivity {
         wishDB = new WishDB(this);
         Intent i = getIntent();
         imageLoader = AppController.getInstance().getImageLoader();
-        p_id = i.getStringExtra("p_id");
+        p_id = i.getIntExtra("p_id", 0);
         bitmap = i.getStringExtra("image1_url");
         s_name = i.getStringExtra("title");
         s_amount = i.getStringExtra("amount");
         s_description = i.getStringExtra("description");
+        rating = String.valueOf(i.getIntExtra("rating", 0));
 
-        title = (TextView) findViewById(R.id.title_label);
-        amount = (TextView) findViewById(R.id.amount_label);
-        description = (TextView) findViewById(R.id.description_label);
+        Log.d("splash_screen_req", s_name + " " + p_id);
+
+        setUpViews();
+
         title.setText(s_name);
-        amount.setText(s_amount);
+        tvAmount.setText("kshs. " + s_amount);
         description.setText(s_description);
-        number_reviews = (TextView) findViewById(R.id.no_review_text);
 
-        //image views
-        thumbNail = (NetworkImageView) findViewById(R.id.img1);
-        NetworkImageView img2 = (NetworkImageView) findViewById(R.id.img2);
-        NetworkImageView img3 = (NetworkImageView) findViewById(R.id.img3);
-        NetworkImageView img4 = (NetworkImageView) findViewById(R.id.img4);
-        thumbNail.setImageUrl(bitmap, imageLoader);
+        setImage();
         img2.setImageUrl(bitmap, imageLoader);
         img3.setImageUrl(bitmap, imageLoader);
         img4.setImageUrl(bitmap, imageLoader);
         thumbNail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BitmapDrawable bd = (BitmapDrawable) ((NetworkImageView) view.findViewById(R.id.img1))
-                        .getDrawable();
-                Bitmap bitmapzoom = bd.getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bd.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, baos);
-                byte[] imgByte = baos.toByteArray();
+
                 Intent intent = new Intent(getApplicationContext(), ZoomImage.class);
-                intent.putExtra("image", imgByte);
+                intent.putExtra("image_url", bitmap);
                 startActivity(intent);
             }
         });
 
-        circularbar = (com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) this.findViewById(R.id.progressBar);
-        circularbar.setCircleBackgroundEnabled(false);
-        circularbar.setColorSchemeResources(android.R.color.holo_green_light);
-        recyc_bar = (com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) this.findViewById(R.id.recycler_progressBar);
-        recyc_bar.setCircleBackgroundEnabled(false);
-        recyc_bar.setColorSchemeResources(android.R.color.holo_green_light);
-        ImageView img = (ImageView) findViewById(R.id.share);
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out " + title.getText() + " at BuyAtHome app for Android at only Kshs." + amount.getText() + "Download the android app on PlayStore");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "BuyAtHome");
-                startActivity(Intent.createChooser(shareIntent, "share..."));
-            }
-        });
+        //review_input.addTextChangedListener(mTextEditorWatcher);
+        networkRequests(String.valueOf(p_id), "load reviews");
+    }
 
+    private void setImage() {
+        UniversalImageLoader imgLoader = new UniversalImageLoader();
+        imgLoader.setUpDisplayImageView(thumbNail, bitmap, R.drawable.product_placeholder);
+    }
+
+    private void setUpViews() {
+        title = (TextView) findViewById(R.id.title_label);
+        tvAmount = (TextView) findViewById(R.id.amount_label);
+        description = (TextView) findViewById(R.id.description_label);
+        Linkify.addLinks(description, Linkify.WEB_URLS);
+        number_reviews = (TextView) findViewById(R.id.no_review_text);
+        pop_ratingbar = (RatingBar) findViewById(R.id.pop_ratingbar);
+        pop_ratingbar.setRating(Float.parseFloat(rating));
+        //image views
+        thumbNail = (ImageView) findViewById(R.id.img1);
+        img2 = (NetworkImageView) findViewById(R.id.img2);
+        img3 = (NetworkImageView) findViewById(R.id.img3);
+        img4 = (NetworkImageView) findViewById(R.id.img4);
         ImageView img_fav = (ImageView) findViewById(R.id.favourite);
         img_fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToFavourites();
+                addToWishList();
+            }
+        });
+        circularbar = (com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) this.findViewById(R.id.progressBar);
+        circularbar.setCircleBackgroundEnabled(false);
+        circularbar.setColorSchemeResources(R.color.green_color);
+        recyc_bar = (com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) this.findViewById(R.id.recycler_progressBar);
+        recyc_bar.setCircleBackgroundEnabled(false);
+        recyc_bar.setColorSchemeResources(R.color.green_color);
+        ImageView img = (ImageView) findViewById(R.id.share);
+        assert img != null;
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = getPackageName();
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Hey, check out " + title.getText() + " at BuyAtHome app for Android at only Kshs." + tvAmount.getText()
+                                + "\nDownload the app for more amazing deals: "
+                                + "https://play.google.com/store/apps/details?id=" + appPackageName);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "BuyAtHome App for Android");
+                startActivity(Intent.createChooser(shareIntent, "share..."));
             }
         });
         review_input = (EditText) findViewById(R.id.review_input);
         review_input.setVisibility(View.GONE);
-        //review_input.addTextChangedListener(mTextEditorWatcher);
-        networkRequests(p_id, "load reviews");
 
         rv = (RecyclerView) findViewById(R.id.rev_recycler);
         LinearLayoutManager llm2 = new LinearLayoutManager(context);
@@ -225,24 +245,24 @@ public class Details extends ActionBarActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img2:
-                thumbNail.setImageUrl(bitmap, imageLoader);
+                // thumbNail.setImageUrl(bitmap, imageLoader);
                 Toast.makeText(getApplicationContext(), bitmap, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.img3:
-                thumbNail.setImageUrl(bitmap, imageLoader);
+                // thumbNail.setImageUrl(bitmap, imageLoader);
                 Toast.makeText(getApplicationContext(), bitmap, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.img4:
-                thumbNail.setImageUrl(bitmap, imageLoader);
+                //thumbNail.setImageUrl(bitmap, imageLoader);
                 Toast.makeText(getApplicationContext(), bitmap, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.call_button:
 
                 new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Are you sure?")
-                        .setContentText("Call us directly to make your order!")
-                        .setCancelText("No,cancel")
-                        .setConfirmText("Yes,do it!")
+                        .setTitleText("Direct Call!")
+                        .setContentText("Contact us to make your order!")
+                        .setCancelText("No, cancel")
+                        .setConfirmText("Yes, do it!")
                         .showCancelButton(true)
                         .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
@@ -268,7 +288,7 @@ public class Details extends ActionBarActivity {
                     add_review.setText("Send review");
                 } else {
                     if (review_input.getText().toString().trim().length() > 0) {
-                        networkRequests(p_id, "add review");
+                        networkRequests(String.valueOf(p_id), "add review");
                     } else {
                         Snackbar.make(findViewById(android.R.id.content), "Cannot send empty review", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -284,32 +304,20 @@ public class Details extends ActionBarActivity {
 
     private void saveToCart() {
         //get Image
-        thumbNail.buildDrawingCache();
+      /*  thumbNail.buildDrawingCache();
         Bitmap bmap = thumbNail.getDrawingCache();
-        String encodedImageData = getEncoded64ImageStringFromBitmap(bmap);
+        String encodedImageData = getEncoded64ImageStringFromBitmap(bmap);*/
 
-        title.setText(s_name);
-        amount.setText(s_amount);
-        description.setText(s_description);
-        cartDB.insertIntoCart(p_id, s_name, s_amount, s_description, encodedImageData, "1", s_amount);
+       /* title.setText(s_name);
+        tvAmount.setText(s_amount);
+        description.setText(s_description);*/
+        cartDB.insertIntoCart(String.valueOf(p_id), s_name, s_amount, s_description, bitmap, "1", s_amount);
 
         new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText("Good job!")
-                .setContentText("Successfully added item to cart!")
+                .setTitleText("Successful!")
+                .setContentText("Item added item to cart!")
                 .show();
-
-        MenuItemCompat.setActionView(item, R.layout.feed_update_count);
-        View view = MenuItemCompat.getActionView(item);
-        notifCount = (Button) view.findViewById(R.id.notif_count);
-        notifCount.setText(String.valueOf(profile_counts + 1));
-        cartDB.close();
-        notifCount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Details.this, Cart.class);
-                startActivity(i);
-            }
-        });
+        setBadgeCount(Details.this, icon);
     }
 
 
@@ -362,41 +370,131 @@ public class Details extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void addToFavourites() {
+    public void addToWishList() {
         //get Image
-        thumbNail.buildDrawingCache();
+       /* thumbNail.buildDrawingCache();
         Bitmap bmap = thumbNail.getDrawingCache();
-        String encodedImageData = getEncoded64ImageStringFromBitmap(bmap);
+        String encodedImageData = getEncoded64ImageStringFromBitmap(bmap);*/
 
-        title.setText(s_name);
+      /*  title.setText(s_name);
         amount.setText(s_amount);
-        description.setText(s_description);
-        wishDB.insertIntoWishList(p_id, s_name, s_amount, s_description, encodedImageData, "1", s_amount);
+        description.setText(s_description);*/
+        wishDB.insertIntoWishList(String.valueOf(p_id), s_name, s_amount, s_description, bitmap, "1", s_amount);
 
         new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText("Good job!")
-                .setContentText("Successfully added to Wishlist!")
+                .setTitleText("Successful!")
+                .setContentText("Item added item to cart!")
                 .show();
 
     }
 
     private void networkRequests(final String p_id, final String method) {
-       /* if (method.equals("load reviews")) {
-            url = "http://10.0.3.2/buyathome/userdetails/fetch_reviews.php";
-        } else if (method.equals("add review")) {
-            url = "http://10.0.3.2/buyathome/userdetails/add_review.php";
-        }*/
+
         if (method.equals("load reviews")) {
-            url = "http://snapt.t15.org/buyathome/fetch_reviews.php";
+            url = getResources().getString(R.string.server_url) + "fetch_reviews.php";
         } else if (method.equals("add review")) {
-            url = "http://snapt.t15.org/buyathome/add_review.php";
+            url = getResources().getString(R.string.server_url) + "add_review.php";
         }
-        recyc_bar.setVisibility(View.VISIBLE);
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        if (method.equals("load reviews")) {
+            params.put("p_id", p_id);
+        } else if (method.equals("add review")) {
+            params.put("p_id", p_id);
+            params.put("name", getuser_name());
+            params.put("rev_date", getday());
+            params.put("review", review_input.getText().toString());
+            params.put("email", getuser_email());
+        }
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                recyc_bar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                String s = new String(responseBody);
+                Log.d("reviews" + "/" + p_id + "/", s);
+                recyc_bar.setVisibility(View.INVISIBLE);
+                if (method.equals("load reviews")) {
+                    try {
+                        JSONArray jArray = new JSONArray(s);
+                        JSONObject jObject = null;
+                        for (int i = 0; i < jArray.length(); i++) {
+                            jObject = jArray.getJSONObject(i);
+                            ReviewModel rm = new ReviewModel();
+                            rm.setUserReviewName(jObject.getString("rev_name"));
+                            rm.setcomment(jObject.getString("rev_comment"));
+
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH); // I assume d-M, you may refer to M-d for month-day instead.
+                            Date date = formatter.parse(jObject.getString("rev_date")); // You will need try/catch around this
+                            long millis = date.getTime();
+                            Log.d("another time", String.valueOf(millis));
+                            TimeAgo timeAgo = new TimeAgo(getApplicationContext());
+                            rm.settime_stamp(String.valueOf(timeAgo.timeAgo(millis)));
+
+                            reviewmodelList.add(rm);
+                            if (reviewmodelList.size() > 0) {
+                                if (reviewmodelList.size() == 1) {
+                                    number_reviews.setText(String.valueOf(reviewmodelList.size()) + " review");
+                                } else {
+                                    number_reviews.setText(String.valueOf(reviewmodelList.size()) + " reviews");
+                                }
+
+                                rv.setVisibility(View.VISIBLE);
+                            }
+
+                        }
+                        ra.notifyDataSetChanged();
+                    } catch (JSONException | ParseException | java.text.ParseException e) {
+                        e.printStackTrace();
+                    }
+                } else if (method.equals("add review")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        Boolean success = jsonObject.getBoolean("success");
+                        message = jsonObject.getString("message");
+                        if (success) {
+                            review_input.setVisibility(View.GONE);
+                            review_input.setText("");
+                            add_review.setText("Add your review");
+                            reviewmodelList.clear();
+                            networkRequests(p_id, "load reviews");
+                            Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        } else {
+                            Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                recyc_bar.setVisibility(View.INVISIBLE);
+                if (method.equals("load reviews")) {
+                    Snackbar.make(findViewById(android.R.id.content), "Cannot load reviews at the moment, retry later", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else if (method.equals("add review")) {
+                    Snackbar.make(findViewById(android.R.id.content), "Cannot add your review at the moment, retry later", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+
+
+        });
+
+       /* recyc_bar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("reviews", response);
+                        Log.d("reviews" + "/" + p_id + "/", response);
                         recyc_bar.setVisibility(View.INVISIBLE);
                         if (method.equals("load reviews")) {
                             try {
@@ -489,7 +587,7 @@ public class Details extends ActionBarActivity {
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        requestQueue.add(stringRequest);*/
     }
 
 
@@ -497,26 +595,62 @@ public class Details extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_details, menu);
-        item = menu.findItem(R.id.badge);
-        MenuItemCompat.setActionView(item, R.layout.feed_update_count);
-        View view = MenuItemCompat.getActionView(item);
-        profile_counts = cartDB.numberOfRows();
-        notifCount = (Button) view.findViewById(R.id.notif_count);
-        notifCount.setText(String.valueOf(profile_counts));
-        cartDB.close();
-        notifCount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Details.this, Cart.class);
-                startActivity(i);
-            }
-        });
+        itemCart = menu.findItem(R.id.action_cart);
+
+        icon = (LayerDrawable) itemCart.getIcon();
+        setBadgeCount(Details.this, icon);
+
+        if (getuser_name().equalsIgnoreCase("Admin")) {
+            menu.findItem(R.id.action_delete).setVisible(true);
+            menu.findItem(R.id.action_edit).setVisible(true);
+        } else {
+            menu.findItem(R.id.action_delete).setVisible(false);
+            menu.findItem(R.id.action_edit).setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void setNotifCount(int count) {
-        mNotifCount = count;
-        supportInvalidateOptionsMenu();
+    public void setBadgeCount(final Context context, final LayerDrawable icon) {
+
+        new Thread() {
+            public void run() {
+                final int profile_counts = cartDB.numberOfRows();
+                count = String.valueOf(profile_counts);
+                //show
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BadgeDrawable badge;
+
+                        // Reuse drawable if possible
+                        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+                        if (reuse != null && reuse instanceof BadgeDrawable) {
+                            badge = (BadgeDrawable) reuse;
+                        } else {
+                            badge = new BadgeDrawable(context);
+                        }
+
+                        badge.setCount(count);
+                        icon.mutate();
+                        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+                    }
+                });
+
+            }
+        }.start();
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                setBadgeCount(Details.this, icon);
+            }
+        }
     }
 
     @Override
@@ -535,6 +669,74 @@ public class Details extends ActionBarActivity {
         if (id == android.R.id.home) {
             finish();
         }
+        if (id == R.id.action_cart) {
+            Intent intent = new Intent(getApplicationContext(), Cart.class);
+            startActivityForResult(intent, 1);
+        }
+        if (id == R.id.action_delete) {
+            deleteProductRequest();
+        }
+        if (id == R.id.action_cart) {
+            Intent intent = new Intent(getApplicationContext(), Cart.class);
+            startActivityForResult(intent, 1);
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
+    private void deleteProductRequest() {
+        String url = getResources().getString(R.string.server_url) + "delete_product.php";
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("p_id", p_id);
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                loadingDialog();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                String s = new String(responseBody);
+                pDialog.dismissWithAnimation();
+                Log.d("splash_screen_req", s + " " + p_id);
+                System.out.print(s);
+                try {
+                    JSONObject obj = new JSONObject(s);
+
+                    Boolean success = obj.getBoolean("success");
+                    if (success) {
+                        Snackbar.make(findViewById(android.R.id.content), "Record deleted", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } else {
+                        Snackbar.make(findViewById(android.R.id.content), "Failed to delete, retry later", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                Snackbar.make(findViewById(android.R.id.content), "Failed to delete, retry later", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                pDialog.dismissWithAnimation();
+            }
+
+
+        });
+
+    }
+
+    private void loadingDialog() {
+        pDialog = new SweetAlertDialog(Details.this, SweetAlertDialog.PROGRESS_TYPE)
+                .setTitleText("Loading");
+        pDialog.show();
+        pDialog.setCancelable(false);
+        pDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.green_color));
+    }
+
 }

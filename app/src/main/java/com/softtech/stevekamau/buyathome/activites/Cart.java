@@ -2,6 +2,7 @@ package com.softtech.stevekamau.buyathome.activites;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,48 +61,67 @@ public class Cart extends AppCompatActivity implements CartInterFace {
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
         // EventBus.getDefault().register(this);
-        itemList = cartDB.getAllCartItems();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cardList);
-        assert recyclerView != null;
-        recyclerView.setHasFixedSize(true);
-        final LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        final CartAdapter itemAdapter = new CartAdapter(this, getApplicationContext(), itemList);
-        recyclerView.setAdapter(itemAdapter);
+        new Thread() {
 
-        double amount = Double.parseDouble(String.valueOf(cartDB.getTotalOfAmount()));
-        DecimalFormat formatter = new DecimalFormat("#,###.00");
-
-        if (cartDB.checkForTables()) {
-            (findViewById(R.id.empty_cart)).setVisibility(View.INVISIBLE);
-            (findViewById(R.id.scroll_content)).setVisibility(View.VISIBLE);
-            fab.setVisibility(View.VISIBLE);
-            sub_total.setText("kshs. " + formatter.format(amount));
-            sub_total2.setText("kshs. " + formatter.format(amount));
-            grand_total.setText("kshs. " + formatter.format(amount));
-            s_amount = String.valueOf(formatter.format(amount));
-        } else {
-            (findViewById(R.id.empty_cart)).setVisibility(View.VISIBLE);
-            (findViewById(R.id.scroll_content)).setVisibility(View.INVISIBLE);
-            FloatingActionButton mel_fab = (FloatingActionButton) findViewById(R.id.mel_fab);
-            mel_fab.setColorNormal(getResources().getColor(R.color.accentColor));
-            mel_fab.setColorPressed(getResources().getColor(R.color.accentColor_pressed));
-            mel_fab.setColorRipple(getResources().getColor(R.color.accentColor_pressed));
-            mel_fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
+            public void run() {
+                itemList = cartDB.getAllCartItems();
+                final double amount = Double.parseDouble(String.valueOf(cartDB.getTotalOfAmount()));
+                final DecimalFormat formatter = new DecimalFormat("#,###.00");
+                Boolean isCart = false;
+                if (cartDB.checkForTables()) {
+                    isCart = true;
                 }
-            });
-            fab.setVisibility(View.INVISIBLE);
-        }
+                //show Syncing Progress
+                final Boolean finalIsCart = isCart;
+                final Boolean finalIsCart1 = isCart;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cardList);
+                        assert recyclerView != null;
+                        recyclerView.setHasFixedSize(true);
+                        final LinearLayoutManager llm = new LinearLayoutManager(Cart.this);
+                        llm.setOrientation(LinearLayoutManager.VERTICAL);
+                        recyclerView.setLayoutManager(llm);
+                        final CartAdapter itemAdapter = new CartAdapter(Cart.this, getApplicationContext(), itemList);
+                        recyclerView.setAdapter(itemAdapter);
+
+                        if (finalIsCart1) {
+                            (findViewById(R.id.empty_cart)).setVisibility(View.INVISIBLE);
+                            (findViewById(R.id.scroll_content)).setVisibility(View.VISIBLE);
+                            fab.setVisibility(View.VISIBLE);
+                            sub_total.setText("kshs. " + formatter.format(amount));
+                            sub_total2.setText("kshs. " + formatter.format(amount));
+                            grand_total.setText("kshs. " + formatter.format(amount));
+                            s_amount = String.valueOf(formatter.format(amount));
+                        } else {
+                            (findViewById(R.id.empty_cart)).setVisibility(View.VISIBLE);
+                            (findViewById(R.id.scroll_content)).setVisibility(View.INVISIBLE);
+                            FloatingActionButton mel_fab = (FloatingActionButton) findViewById(R.id.mel_fab);
+                            mel_fab.setColorNormal(getResources().getColor(R.color.accentColor));
+                            mel_fab.setColorPressed(getResources().getColor(R.color.accentColor_pressed));
+                            mel_fab.setColorRipple(getResources().getColor(R.color.accentColor_pressed));
+                            mel_fab.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    finish();
+                                }
+                            });
+                            fab.setVisibility(View.INVISIBLE);
+                        }
+
+                    }
+                });
+
+            }
+        }.start();
 
 
     }
@@ -113,6 +133,8 @@ public class Cart extends AppCompatActivity implements CartInterFace {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == android.R.id.home) {
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -144,7 +166,7 @@ public class Cart extends AppCompatActivity implements CartInterFace {
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
         if (cartDB.checkForTables()) {
-            Log.d("On_cart_item_deleted","full");
+            Log.d("On_cart_item_deleted", "full");
             (findViewById(R.id.empty_cart)).setVisibility(View.INVISIBLE);
             (findViewById(R.id.scroll_content)).setVisibility(View.VISIBLE);
             fab.setVisibility(View.VISIBLE);
@@ -153,7 +175,7 @@ public class Cart extends AppCompatActivity implements CartInterFace {
             grand_total.setText("kshs. " + formatter.format(amount));
             s_amount = String.valueOf(formatter.format(amount));
         } else {
-            Log.d("On_cart_item_deleted","empty");
+            Log.d("On_cart_item_deleted", "empty");
             (findViewById(R.id.empty_cart)).setVisibility(View.VISIBLE);
             (findViewById(R.id.scroll_content)).setVisibility(View.INVISIBLE);
             FloatingActionButton mel_fab = (FloatingActionButton) findViewById(R.id.mel_fab);
@@ -168,5 +190,6 @@ public class Cart extends AppCompatActivity implements CartInterFace {
             });
             fab.setVisibility(View.INVISIBLE);
         }
+        Snackbar.make(fab, "Item successfully removed.", Snackbar.LENGTH_SHORT).show();
     }
 }

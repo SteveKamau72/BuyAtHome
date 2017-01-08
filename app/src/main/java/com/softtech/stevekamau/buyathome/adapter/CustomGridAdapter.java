@@ -3,6 +3,7 @@ package com.softtech.stevekamau.buyathome.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,12 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.softtech.stevekamau.buyathome.R;
 import com.softtech.stevekamau.buyathome.activites.Details;
 import com.softtech.stevekamau.buyathome.app.AppController;
 import com.softtech.stevekamau.buyathome.model.NewModel;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -29,16 +34,22 @@ public class CustomGridAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<NewModel> modelItems;
-    private int mDefaultImageId;
+    private DisplayImageOptions options;
 
     public CustomGridAdapter(Activity activity, List<NewModel> modelItems) {
         this.activity = activity;
         this.modelItems = modelItems;
-    }
 
-
-    public void setDefaultImageResId(int defaultImage) {
-        mDefaultImageId = defaultImage;
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.product_placeholder)
+                .showImageForEmptyUri(R.drawable.product_placeholder)
+//                .displayer(new RoundedBitmapDisplayer(50))
+                .showImageOnFail(R.drawable.product_placeholder)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
     }
 
     @Override
@@ -63,17 +74,37 @@ public class CustomGridAdapter extends BaseAdapter {
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.grid_cell_wider, null);
+            convertView = inflater.inflate(R.layout.grid_two_cells, null);
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
-        NetworkImageView thumbNail = (NetworkImageView) convertView
-                .findViewById(R.id.thumbnail);
+        ImageView thumbNail = (ImageView) convertView.findViewById(R.id.thumbnail);
         final TextView title = (TextView) convertView.findViewById(R.id.title);
         final TextView amount = (TextView) convertView.findViewById(R.id.amount);
         final NewModel m = modelItems.get(position);
         // thumbnail image
-        thumbNail.setImageUrl(m.getImage_url(), imageLoader);
+        //download from the url
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance()
+                .displayImage(m.getImage_url(), thumbNail, options, new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+
+                    }
+                }, new ImageLoadingProgressListener() {
+                    @Override
+                    public void onProgressUpdate(String imageUri, View view, int current, int total) {
+
+                    }
+                });
         thumbNail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,12 +114,17 @@ public class CustomGridAdapter extends BaseAdapter {
                 intent.putExtra("amount", m.getAmount());
                 intent.putExtra("description", m.getDetails());
                 intent.putExtra("image1_url", m.getImage_url());
+                intent.putExtra("rating", m.getRatings());
                 activity.startActivity(intent);
             }
         });
         // title
         title.setText(m.getName());
-        amount.setText(m.getAmount());
+        //amount
+        double d_amount = Double.parseDouble(m.getAmount());
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        amount.setText(formatter.format(d_amount));
+
         ImageView options = (ImageView) convertView.findViewById(R.id.options);
         options.setOnClickListener(new View.OnClickListener() {
             @Override

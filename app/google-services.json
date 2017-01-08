@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "183835762550-qr4ar9kjf5isbpti3bdq3ihpgbegkdbb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softtech.stevekamau.buyathome",
+            "certificate_hash": "548ECAF2B772EA95BCE1C3831CF377167C3040BD"
+          }
+        },
+        {
           "client_id": "183835762550-aov8oibdqg0ilkfkcjdo1bsnbj800a8s.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -12,9 +12,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.softtech.stevekamau.buyathome.Preferences;
 import com.softtech.stevekamau.buyathome.R;
@@ -33,8 +36,10 @@ import java.util.List;
 
 public class SearchActivity extends ActionBarActivity {
     EditText search_view;
+    TextView tv_empty_text;
     String data, p_name, img_url, p_amount, p_tags, p_details;
     int p_id, p_rating;
+    ListView lv;
     private ProgressDialog pDialog;
     private List<Model> modelList = new ArrayList<Model>();
     private SearchListAdapter adapter;
@@ -53,11 +58,25 @@ public class SearchActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         search_view = (EditText) findViewById(R.id.search_view);
-
+        tv_empty_text = (TextView) findViewById(R.id.empty_text);
+        lv = (ListView) findViewById(R.id.list);
         MyTextWatcher textWatcher = new MyTextWatcher(search_view);
         search_view.addTextChangedListener(textWatcher);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), Details.class);
+                intent.putExtra("p_id", modelList.get(i).getId());
+                intent.putExtra("title", modelList.get(i).getName());
+                intent.putExtra("amount", modelList.get(i).getAmount());
+                intent.putExtra("description", modelList.get(i).getDetails());
+                intent.putExtra("image1_url", modelList.get(i).getImage_url());
+                // TODO: 12/6/16 this is totally dummy data
+                intent.putExtra("rating", modelList.get(i).getRatings());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -66,125 +85,6 @@ public class SearchActivity extends ActionBarActivity {
         //  getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
     }
-/*
-    private void allRequest() {
-
-
-        pDialog = new ProgressDialog(this);
-        // Showing progress dialog before making http request
-        pDialog.setMessage("Please wait...");
-        pDialog.show();
-        pDialog.setCancelable(false);
-        pDialog.setCanceledOnTouchOutside(false);
-        // Creating volley request obj
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                JsonArrayRequest productReq = new JsonArrayRequest(url,
-                        new Response.Listener<JSONArray>() {
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                Log.d(TAG, response.toString());
-                                pDialog.dismiss();
-
-                                // Parsing json
-                                for (int i = 0; i < response.length(); i++) {
-                                    try {
-
-                                        JSONObject obj = response.getJSONObject(i);
-                                        Model model = new Model();
-                                       *//* model.setTitle(obj.getString("title"));
-                                        model.setThumbnailUrl(obj.getString("image"));
-                                        model.setRating((int) ((Number) obj.get("rating"))
-                                                .doubleValue());
-
-                                        // Genre is json array
-                                        JSONArray genreArry = obj.getJSONArray("genre");
-                                        ArrayList<String> genre = new ArrayList<String>();
-                                        for (int j = 0; j < genreArry.length(); j++) {
-                                            genre.add((String) genreArry.get(j));
-                                        }
-                                        model.setGenre(genre);*//*
-
-                                        // adding model to model array
-                                        modelList.add(model);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-
-                                // notifying list adapter about data changes
-                                // so that it renders the list view with updated data
-                                adapter.notifyDataSetChanged();
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            if (!isFinishing()) {
-                                showAlertDialog();
-                            }
-                            pDialog.dismiss();
-                            Context context = getApplicationContext();
-                        } else if (error instanceof AuthFailureError) {
-                            if (!isFinishing()) {
-                                serverDialog();
-                            }
-                            pDialog.dismiss();
-                            Context context = getApplicationContext();
-                        } else if (error instanceof ServerError) {
-                            if (!isFinishing()) {
-                                serverDialog();
-                            }
-                            pDialog.dismiss();
-                            Context context = getApplicationContext();
-                        } else if (error instanceof NetworkError) {
-                            if (!isFinishing()) {
-                                showAlertDialog();
-                            }
-                            pDialog.dismiss();
-                            Context context = getApplicationContext();
-                        } else if (error instanceof ParseError) {
-                            if (!isFinishing()) {
-                                serverDialog();
-                            }
-                            pDialog.dismiss();
-                            Context context = getApplicationContext();
-                        }
-
-                    }
-
-                    ;
-                });
-
-
-                // Adding request to request queue
-                AppController.getInstance().addToRequestQueue(productReq);
-            }
-        });
-        thread.start();
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Model model = (Model) adapter.getItem(position);
-
-                String name = ((TextView) view.findViewById(R.id.title)).getText().toString();
-                String rate = ((TextView) view.findViewById(R.id.rating)).getText().toString();
-                String genres = ((TextView) view.findViewById(R.id.genre)).getText().toString();
-
-                Intent intent = new Intent(SearchActivity.this, Details.class);
-                intent.putExtra(Title, name);
-               *//* intent.putExtra("images", model.getThumbnailUrl());*//*
-                intent.putExtra(Rate, rate);
-                intent.putExtra(Genre, genres);
-
-                startActivity(intent);
-            }
-        });
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -219,16 +119,11 @@ public class SearchActivity extends ActionBarActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
             modelList.clear();
             SharedPreferences sharedPreferences = getSharedPreferences("ACCOUNT", MODE_PRIVATE);
             String json = sharedPreferences.getString("product_list", "");
             Log.d("json_str", json);
-            if (!json.equals("")) {
+            if (!s.equals("")) {
                 try {
                     JSONArray jsonArray = new JSONArray(json);
 
@@ -254,9 +149,10 @@ public class SearchActivity extends ActionBarActivity {
                             model.setTags(p_tags);
                             model.setDetails(p_details);
                             model.setRatings(p_rating);
+
                             if (p_name.contains(s.toString())) {
 
-                                modelList.add(0,model);
+                                modelList.add(0, model);
                             }
 
                         } catch (JSONException e) {
@@ -264,14 +160,31 @@ public class SearchActivity extends ActionBarActivity {
                         }
 
                     }
-
-                    ListView lv = (ListView) findViewById(R.id.list);
+                    Log.d("jsearch", s.toString() + "==" + String.valueOf(modelList.size()));
                     adapter = new SearchListAdapter(SearchActivity.this, modelList);
                     lv.setAdapter(adapter);
+                    if (modelList.size() == 0) {
+                        lv.setVisibility(View.INVISIBLE);
+                        tv_empty_text.setText("Tip: Use keywords to find items easily");
+                        tv_empty_text.setVisibility(View.VISIBLE);
+                    } else {
+                        lv.setVisibility(View.VISIBLE);
+                        tv_empty_text.setVisibility(View.INVISIBLE);
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else {
+                lv.setVisibility(View.INVISIBLE);
+                tv_empty_text.setText("Tip: Use keywords to find items easily");
+                tv_empty_text.setVisibility(View.VISIBLE);
             }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     }
 }

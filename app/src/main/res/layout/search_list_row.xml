@@ -6,7 +6,7 @@
     android:padding="8dp">
 
     <!-- Thumbnail Image -->
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -55,6 +55,8 @@
         android:layout_below="@id/amount"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/thumbnail"
+        android:ellipsize="end"
+        android:maxLines="4"
         android:text="description"
         android:textColor="@color/genre"
         android:textSize="@dimen/genre" />

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.softtech.stevekamau.buyathome.activites.PurchasesList">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+
+    <android.support.v7.widget.RecyclerView
+
+        android:id="@+id/notifList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/app_bar"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:elevation="3dp" />
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/mel_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="19dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginRight="19dp"
+        android:src="@drawable/ic_fab_add" />
+</RelativeLayout>

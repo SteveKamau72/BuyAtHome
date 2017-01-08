@@ -41,12 +41,14 @@ public class Register extends AppCompatActivity {
     EditText ed_name, ed_email, ed_password;
     String name, email, password, message;
     ActionProcessButton button;
+    String main_data_response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        Intent i = getIntent();
+        main_data_response = i.getStringExtra("main_data_response");
         ed_name = (EditText) findViewById(R.id.name);
         ed_email = (EditText) findViewById(R.id.email);
         ed_password = (EditText) findViewById(R.id.password);
@@ -98,7 +100,7 @@ public class Register extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String reg_url = "http://snapt.t15.org/buyathome/register.php";
+            String reg_url = getResources().getString(R.string.server_url) + "register.php";
             //String reg_url = "http://10.0.3.2/buyathome/userdetails/register.php";
             String method = params[0];
             if (method.equals("register")) {
@@ -178,6 +180,7 @@ public class Register extends AppCompatActivity {
                     editor.apply();
                     Intent intent = new Intent(Register.this, MainActivity.class);
                     intent.putExtra("message", name);
+                    intent.putExtra("main_data_response", main_data_response);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();

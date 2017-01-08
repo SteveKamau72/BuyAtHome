@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg_register"
     android:gravity="center"
     android:orientation="vertical"
@@ -93,30 +93,30 @@
 
         <!-- Login Button -->
 
-       <!-- <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="#ea4c88"
-            android:text="@string/btn_register"
-            android:textColor="@color/white" />-->
+        <!-- <Button
+             android:id="@+id/btnRegister"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="20dip"
+             android:background="#ea4c88"
+             android:text="@string/btn_register"
+             android:textColor="@color/white" />-->
         <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Sign up"
+            android:text="Register"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             custom:pb_colorComplete="@color/green_complete"
+            custom:pb_colorError="@color/red_error"
             custom:pb_colorNormal="@color/blue_normal"
             custom:pb_colorPressed="@color/blue_pressed"
             custom:pb_colorProgress="@color/purple_progress"
             custom:pb_textComplete="Success"
-            custom:pb_textProgress="Loading"
             custom:pb_textError="Error"
-            custom:pb_colorError="@color/red_error" />
+            custom:pb_textProgress="Loading" />
 
         <!-- Link to Login Screen -->
 

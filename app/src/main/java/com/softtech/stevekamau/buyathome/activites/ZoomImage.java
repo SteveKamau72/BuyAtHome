@@ -1,7 +1,5 @@
 package com.softtech.stevekamau.buyathome.activites;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,12 +10,14 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.softtech.stevekamau.buyathome.R;
+import com.softtech.stevekamau.buyathome.helper.UniversalImageLoader;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ZoomImage extends ActionBarActivity {
-    ImageView img2, back;
+    ImageView back;
     PhotoViewAttacher mAttacher;
+    String image_url;
     private ImageView imageView;
     private ScaleGestureDetector scaleGestureDetector;
     private Matrix matrix = new Matrix();
@@ -27,12 +27,14 @@ public class ZoomImage extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zoom_image);
         Bundle extras = getIntent().getExtras();
-        byte[] b = extras.getByteArray("image");
+        image_url = extras.getString("image_url");
+        imageView = (ImageView) findViewById(R.id.img2);
 
-        Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
-        img2 = (ImageView) findViewById(R.id.img2);
-        img2.setImageBitmap(bmp);
-        mAttacher = new PhotoViewAttacher(img2);
+        mAttacher = new PhotoViewAttacher(imageView);
+
+        UniversalImageLoader imgLoader = new UniversalImageLoader();
+        imgLoader.setUpDisplayImageView(imageView, image_url, R.drawable.product_placeholder);
+
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

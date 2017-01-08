@@ -11,13 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.softtech.stevekamau.buyathome.InnerGridView;
 import com.softtech.stevekamau.buyathome.R;
 import com.softtech.stevekamau.buyathome.adapter.PhoneGridAdapter;
 import com.softtech.stevekamau.buyathome.helper.UrlFormatter;
+import com.softtech.stevekamau.buyathome.interfaces.OnOptionsSelectedInterface;
 import com.softtech.stevekamau.buyathome.model.PhoneModel;
 
 import org.json.JSONArray;
@@ -32,7 +32,7 @@ import cn.carbs.android.library.MDDialog;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PhonesFragment extends Fragment {
+public class PhonesFragment extends Fragment implements OnOptionsSelectedInterface {
 
     View view;
     String p_name, img_url, p_amount, p_tags, p_details, json;
@@ -64,13 +64,12 @@ public class PhonesFragment extends Fragment {
         if (!json.equals("")) {
             loadPhones(json);
         }
-
+/*
         ig.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(activity, Details.class);
-
                 intent.putExtra("p_id", modelList.get(position).getId());
                 intent.putExtra("title", modelList.get(position).getName());
                 intent.putExtra("amount", modelList.get(position).getAmount());
@@ -78,7 +77,7 @@ public class PhonesFragment extends Fragment {
                 intent.putExtra("image1_url", modelList.get(position).getImage_url());
                 startActivity(intent);
             }
-        });
+        });*/
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,11 +156,18 @@ public class PhonesFragment extends Fragment {
                     model.setTags(p_tags);
                     model.setDetails(p_details);
                     model.setRatings(p_rating);
-                    int numberToSort = Integer.parseInt(p_amount);
-                    if (numberToSort > range1 && numberToSort < range2) {
-                        modelList.add(model);
-                    }
+                    Log.d("range_values", p_amount);
+//                    int numberToSort = 0;
+                    if (!p_amount.equals("")) {
+                        int numberToSort = Integer.parseInt(p_amount);
 
+                        if (p_tags.equals("phones")) {
+
+                            if (numberToSort > range1 && numberToSort < range2) {
+                                modelList.add(model);
+                            }
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -175,9 +181,10 @@ public class PhonesFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        PhoneGridAdapter customGridAdapter = new PhoneGridAdapter(activity, modelList);
+        PhoneGridAdapter customGridAdapter = new PhoneGridAdapter(activity, modelList, this);
         ig.setAdapter(customGridAdapter);
 
+        Log.d("empty_check", String.valueOf(modelList.size()));
     }
 
     private void loadPhones(String data) {
@@ -210,8 +217,7 @@ public class PhonesFragment extends Fragment {
                     model.setDetails(p_details);
                     model.setRatings(p_rating);
 
-                    if (p_tags.contains("phone")) {
-
+                    if (p_tags.equals("phone")) {
                         modelList.add(model);
                     }
 
@@ -228,8 +234,38 @@ public class PhonesFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        PhoneGridAdapter customGridAdapter = new PhoneGridAdapter(activity, modelList);
+        PhoneGridAdapter customGridAdapter = new PhoneGridAdapter(activity, modelList, this);
         ig.setAdapter(customGridAdapter);
+
+        Log.d("empty_check", String.valueOf(modelList.size()));
+
+    }
+
+    @Override
+    public void onShareButtonclicked(String name, String amount) {
+        final String appPackageName = getActivity().getPackageName();
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                "Hey, check out " + name + " at BuyAtHome app for Android at only Kshs." + amount
+                        + "\nDownload the app for more amazing deals: "
+                        + "https://play.google.com/store/apps/details?id=" + appPackageName);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "BuyAtHome App for Android");
+        startActivity(Intent.createChooser(shareIntent, "share..."));
+    }
+
+    @Override
+    public void onAddToCartButtonClicked(int id, String name, String amount, String details, String encodedImageData, String s, String mAmount) {
+        ((MainActivity) getActivity()).addTCart(String.valueOf(id), name, amount, details, encodedImageData, "1", amount);
+    }
+
+    @Override
+    public void onAddToWishList(int id, String name, String amount, String details, String encodedImageData, String s, String mAmount) {
+        ((MainActivity) getActivity()).addToWishList(String.valueOf(id), name, amount, details, encodedImageData, "1", amount);
+    }
+
+    @Override
+    public void onDeleteItem() {
 
     }
 }

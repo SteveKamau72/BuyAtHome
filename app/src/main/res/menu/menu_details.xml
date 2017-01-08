@@ -8,10 +8,16 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/badge"
-        android:actionLayout="@layout/feed_update_count"
-        android:icon="@drawable/shape_notification"
-        android:title="@string/action_refresh"
-        app:showAsAction="always">
-    </item>
+        android:id="@+id/action_cart"
+        android:icon="@drawable/ic_menu_cart"
+        android:title="@string/action_cart"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_edit"
+        android:title="@string/action_edit"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_delete"
+        android:title="@string/action_delete"
+        app:showAsAction="never" />
 </menu>

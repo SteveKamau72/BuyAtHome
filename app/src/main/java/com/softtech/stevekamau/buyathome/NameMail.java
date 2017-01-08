@@ -1,6 +1,5 @@
 package com.softtech.stevekamau.buyathome;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,11 +9,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.softtech.stevekamau.buyathome.helper.SQLiteHandler;
+import com.softtech.stevekamau.buyathome.databaseHandlers.CartDB;
 
 public class NameMail extends AppCompatActivity {
     EditText ed1, ed2, ed3;
-    private SQLiteHandler db;
+    private CartDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,7 @@ public class NameMail extends AppCompatActivity {
         ed1 = (EditText) findViewById(R.id.e1);
         ed2 = (EditText) findViewById(R.id.e3);
 
-        db = new SQLiteHandler(getApplicationContext());
+        db = new CartDB(getApplicationContext());
     }
 
     @Override

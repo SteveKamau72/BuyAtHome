@@ -1,8 +1,8 @@
 package com.softtech.stevekamau.buyathome.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -14,13 +14,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.softtech.stevekamau.buyathome.R;
 import com.softtech.stevekamau.buyathome.databaseHandlers.WishDB;
 import com.softtech.stevekamau.buyathome.helper.ItemTouchHelperAdapter;
 import com.softtech.stevekamau.buyathome.helper.ItemTouchHelperViewHolder;
 import com.softtech.stevekamau.buyathome.interfaces.CartInterFace;
+import com.softtech.stevekamau.buyathome.interfaces.OnOptionsSelectedInterface;
 import com.softtech.stevekamau.buyathome.model.CartModel;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
@@ -31,14 +37,27 @@ import java.util.List;
 public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
 
     static List<CartModel> itemList;
-    private final Context context;
+    Activity activity;
     CartInterFace ci;
     private TextView tvNumber;
+    private OnOptionsSelectedInterface onOptionsSelected;
+    private DisplayImageOptions options;
 
-    public WishListAdapter(CartInterFace ci, Context context, List<CartModel> itemList) {
-        this.context = context;
+    public WishListAdapter(CartInterFace ci, OnOptionsSelectedInterface onOptionsSelected, Activity activity, List<CartModel> itemList) {
+        this.activity = activity;
         this.itemList = itemList;
         this.ci = ci;
+        this.onOptionsSelected = onOptionsSelected;
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.product_placeholder)
+                .showImageForEmptyUri(R.drawable.product_placeholder)
+//                .displayer(new RoundedBitmapDisplayer(50))
+                .showImageOnFail(R.drawable.product_placeholder)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
 
     }
 
@@ -128,37 +147,55 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ItemVi
         double amount = Double.parseDouble(String.valueOf(item.getAmount()));
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-        itemViewHolder.tvAmount.setText("kshs. " + formatter.format(amount));
+        itemViewHolder.tvAmount.setText(formatter.format(amount));
 
-        byte[] decodedString = Base64.decode(item.getImageFromPath(), Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-        itemViewHolder.itemImage.setImageBitmap(decodedByte);
-        itemViewHolder.imgButon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteItem(position, item.getId());/*
-                CartDB cartDB = new CartDB(context);
-                cartDB.deleteSingleCartItem(item.getId());*/
-                WishDB wishDB = new WishDB(context);
-                wishDB.deleteSingleWishList(item.getId());
-            }
-        });
         itemViewHolder.options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopup(view);
+                showPopup(view, position, itemViewHolder, item.getImageFromPath());
             }
         });
+        itemViewHolder.imgButon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //delete from db
+                WishDB wishDB = new WishDB(activity);
+                wishDB.deleteSingleWishList(item.getId());
+                //update list
+                deleteItem(position, item.getId());
+                (onOptionsSelected).onDeleteItem();
+            }
+        });
+        //download from the url
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance()
+                .displayImage(item.getImageFromPath(), itemViewHolder.itemImage, options, new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+
+                    }
+                }, new ImageLoadingProgressListener() {
+                    @Override
+                    public void onProgressUpdate(String imageUri, View view, int current, int total) {
+
+                    }
+                });
     }
 
     public void deleteItem(int index, Integer id) {
+        //remove from list
         itemList.remove(index);
         notifyItemRemoved(index);
         notifyItemRangeChanged(index, itemList.size());
         (ci).onDeleted(id);
-        /*Snackbar.make(findViewById(android.R.id.content), "empty", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();*/
     }
 
 
@@ -168,20 +205,32 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ItemVi
         return new ItemViewHolder(itemView);
     }
 
-    private void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(context, v);
+    private void showPopup(View v, final int position, final ItemViewHolder itemViewHolder, final String imageFromPath) {
+        final CartModel modelItem = itemList.get(position);
+        PopupMenu popup = new PopupMenu(activity, v);
         // Inflate the menu from xml
-        popup.getMenuInflater().inflate(R.menu.popup_grid, popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.popup_wishliist, popup.getMenu());
         // Setup menu item selection
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.share_this:
-
+                        (onOptionsSelected).onShareButtonclicked(modelItem.getTitle()
+                                , String.valueOf(modelItem.getAmount()));
                         return true;
                     case R.id.add_to_cart:
+
+                        (onOptionsSelected).onAddToCartButtonClicked(modelItem.getId(), modelItem.getTitle(),
+                                String.valueOf(modelItem.getAmount()), modelItem.getDescription(),
+                                imageFromPath, "1", String.valueOf(modelItem.getAmount()));
                         return true;
-                    case R.id.add_to_wishlist:
+                    case R.id.delete_wishlist:
+                        //delete from db
+                        WishDB wishDB = new WishDB(activity);
+                        wishDB.deleteSingleWishList(modelItem.getId());
+                        //update list
+                        deleteItem(position, modelItem.getId());
+                        (onOptionsSelected).onDeleteItem();
                         return true;
                     default:
                         return false;
@@ -191,6 +240,16 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ItemVi
         // Handle dismissal with: popup.setOnDismissListener(...);
         // Show the menu
         popup.show();
+    }
+
+    public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        byte[] byteFormat = stream.toByteArray();
+        // get the base 64 string
+        String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
+
+        return imgString;
     }
 
     public interface OnStartDragListener {
@@ -215,6 +274,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ItemVi
             itemImage = (ImageView) v.findViewById(R.id.imageView);
             options = (ImageView) v.findViewById(R.id.options);
             imgButon = (ImageView) v.findViewById(R.id.cancel);
+
         }
 
 

@@ -3,9 +3,12 @@ package com.softtech.stevekamau.buyathome.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,12 +17,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.softtech.stevekamau.buyathome.R;
 import com.softtech.stevekamau.buyathome.activites.Details;
 import com.softtech.stevekamau.buyathome.app.AppController;
-import com.softtech.stevekamau.buyathome.model.NewModel;
+import com.softtech.stevekamau.buyathome.interfaces.OnOptionsSelectedInterface;
+import com.softtech.stevekamau.buyathome.model.RecommendedModel;
 
+import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -28,16 +37,30 @@ import java.util.List;
 
 public class RecomGridAdapter extends RecyclerView.Adapter<RecomGridAdapter.ViewHolder> {
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-    private List<NewModel> modelItems;
+    int ratings;
+    private List<RecommendedModel> modelItems;
     private Activity activity;
+    private OnOptionsSelectedInterface onOptionsSelected;
+    private DisplayImageOptions options;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecomGridAdapter(Activity activity, List<NewModel> modelItems) {
+    public RecomGridAdapter(Activity activity, List<RecommendedModel> modelItems, OnOptionsSelectedInterface onOptionsSelected) {
         this.modelItems = modelItems;
         this.activity = activity;
+        this.onOptionsSelected = onOptionsSelected;
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.product_placeholder)
+                .showImageForEmptyUri(R.drawable.product_placeholder)
+//                .displayer(new RoundedBitmapDisplayer(50))
+                .showImageOnFail(R.drawable.product_placeholder)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
     }
 
     // Create new views (invoked by the layout manager)
@@ -54,23 +77,70 @@ public class RecomGridAdapter extends RecyclerView.Adapter<RecomGridAdapter.View
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        NewModel m = modelItems.get(position);
+        final RecommendedModel m = modelItems.get(position);
         holder.p_id.setText("" + m.getId());
         holder.title.setText(m.getName());
-        holder.thumbNail.setImageUrl(m.getImage_url(), imageLoader);
-        holder.amount.setText(m.getAmount());
+        // thumbnail image
+        //download from the url
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance()
+                .displayImage(m.getImage_url(), holder.thumbNail, options, new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+
+                    }
+                }, new ImageLoadingProgressListener() {
+                    @Override
+                    public void onProgressUpdate(String imageUri, View view, int current, int total) {
+
+                    }
+                });
+
+        if (m.getAmount().equals("")) {
+            holder.amount.setText("");
+        } else {
+            double amount = Double.parseDouble(m.getAmount());
+            DecimalFormat formatter = new DecimalFormat("#,###");
+
+            holder.amount.setText(formatter.format(amount));
+        }
+
         holder.description.setText(m.getDetails());
         holder.img1.setText(m.getImage_url());
         holder.img2.setText(m.getImage_url());
         holder.img3.setText(m.getImage_url());
         holder.img4.setText(m.getImage_url());
-        holder.options.setOnClickListener(new View.OnClickListener() {
+        holder.m_options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopup(v);
+                showPopup(v, position, holder, m.getImage_url());
+            }
+        });
+
+        holder.thumbNail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("splash_screen_req", ""+m.getId());
+                Intent intent = new Intent(activity.getApplicationContext(), Details.class);
+                intent.putExtra("p_id", m.getId());
+                intent.putExtra("title", m.getName());
+                intent.putExtra("amount", m.getAmount());
+                intent.putExtra("description", m.getDetails());
+                intent.putExtra("image1_url", m.getImage_url());
+                // TODO: 12/6/16 this is totally dummy data
+                intent.putExtra("rating", m.getRatings());
+                activity.startActivity(intent);
             }
         });
 
@@ -82,7 +152,8 @@ public class RecomGridAdapter extends RecyclerView.Adapter<RecomGridAdapter.View
         return modelItems.size();
     }
 
-    private void showPopup(View v) {
+    private void showPopup(View v, final int position, final ViewHolder holder, final String image_url) {
+        final RecommendedModel m = modelItems.get(position);
         PopupMenu popup = new PopupMenu(activity, v);
         // Inflate the menu from xml
         popup.getMenuInflater().inflate(R.menu.popup_grid, popup.getMenu());
@@ -91,11 +162,16 @@ public class RecomGridAdapter extends RecyclerView.Adapter<RecomGridAdapter.View
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.share_this:
-
+                        (onOptionsSelected).onShareButtonclicked(m.getName()
+                                , m.getAmount());
                         return true;
                     case R.id.add_to_cart:
+                        (onOptionsSelected).onAddToCartButtonClicked(m.getId(), m.getName(), m.getAmount(), m.getDetails(),
+                                image_url, "1", m.getAmount());
                         return true;
                     case R.id.add_to_wishlist:
+                        (onOptionsSelected).onAddToWishList(m.getId(), m.getName(), m.getAmount(), m.getDetails(),
+                                m.getImage_url(), "1", m.getAmount());
                         return true;
                     default:
                         return false;
@@ -107,40 +183,39 @@ public class RecomGridAdapter extends RecyclerView.Adapter<RecomGridAdapter.View
         popup.show();
     }
 
+    public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        byte[] byteFormat = stream.toByteArray();
+        // get the base 64 string
+        String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
+
+        return imgString;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final Context context;
         // each data item is just a string in this case
         public TextView p_id, title, amount, description, img1, img2, img3, img4;
-        public NetworkImageView thumbNail;
-        public ImageView options;
+        public ImageView thumbNail;
+        public ImageView m_options;
         public CardView cardView;
-        private final Context context;
 
         public ViewHolder(View v) {
             super(v);
             p_id = (TextView) v.findViewById(R.id.p_id);
             title = (TextView) v.findViewById(R.id.title);
-            thumbNail = (NetworkImageView) itemView.findViewById(R.id.thumbnail);
+            thumbNail = (ImageView) itemView.findViewById(R.id.thumbnail);
             amount = (TextView) itemView.findViewById(R.id.amount);
             description = (TextView) itemView.findViewById(R.id.description);
-            options = (ImageView) itemView.findViewById(R.id.options);
+            m_options = (ImageView) itemView.findViewById(R.id.options);
             cardView = (CardView) itemView.findViewById(R.id.card);
             img1 = (TextView) v.findViewById(R.id.img1);
             img2 = (TextView) v.findViewById(R.id.img2);
             img3 = (TextView) v.findViewById(R.id.img3);
             img4 = (TextView) v.findViewById(R.id.img4);
             context = itemView.getContext();
-            thumbNail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context.getApplicationContext(), Details.class);
-                    intent.putExtra("p_id", p_id.getText().toString());
-                    intent.putExtra("title", title.getText().toString());
-                    intent.putExtra("amount", amount.getText().toString());
-                    intent.putExtra("description", description.getText().toString());
-                    intent.putExtra("image1_url", img1.getText().toString());
-                    context.startActivity(intent);
-                }
-            });
+
         }
     }
 }

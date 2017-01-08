@@ -12,30 +12,34 @@
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:theme="@style/MyCustomToolBarTheme">
 
-        <!--  <SearchView
-              android:id="@+id/search_view"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_alignParentLeft="true"
-              android:layout_alignParentRight="true"
-              android:layout_alignParentTop="true"
-              android:background="@null"
-              android:iconifiedByDefault="false"
-              android:padding="2dp"
-              android:queryHint="I am looking for..." />-->
         <EditText
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="Search..." />
+            android:hint="I am looking for..." />
     </android.support.v7.widget.Toolbar>
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/list_divider"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/list_row_selector" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/list_divider"
+            android:dividerHeight="1dp"
+            android:listSelector="@drawable/list_row_selector" />
+
+        <TextView
+            android:id="@+id/empty_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="No search"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
 </LinearLayout>

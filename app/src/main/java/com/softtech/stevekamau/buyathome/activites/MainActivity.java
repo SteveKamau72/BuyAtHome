@@ -2,11 +2,15 @@ package com.softtech.stevekamau.buyathome.activites;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -14,7 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,69 +35,80 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.softtech.stevekamau.buyathome.NavigationDrawerFragment;
 import com.softtech.stevekamau.buyathome.Preferences;
 import com.softtech.stevekamau.buyathome.R;
 import com.softtech.stevekamau.buyathome.TopExceptionHandler;
 import com.softtech.stevekamau.buyathome.adapter.CustomGridAdapter;
 import com.softtech.stevekamau.buyathome.adapter.FeaturedGridAdapter;
+import com.softtech.stevekamau.buyathome.adapter.HotDealsAdapter;
 import com.softtech.stevekamau.buyathome.adapter.NewGridAdapter;
 import com.softtech.stevekamau.buyathome.adapter.RecomGridAdapter;
-import com.softtech.stevekamau.buyathome.app.AppController;
+import com.softtech.stevekamau.buyathome.app.AppConfig;
 import com.softtech.stevekamau.buyathome.databaseHandlers.CartDB;
+import com.softtech.stevekamau.buyathome.databaseHandlers.WishDB;
+import com.softtech.stevekamau.buyathome.helper.BadgeDrawable;
 import com.softtech.stevekamau.buyathome.helper.HorizontalListView;
+import com.softtech.stevekamau.buyathome.helper.NotificationUtils;
 import com.softtech.stevekamau.buyathome.helper.UrlFormatter;
+import com.softtech.stevekamau.buyathome.interfaces.OnOptionsSelectedInterface;
+import com.softtech.stevekamau.buyathome.interfaces.UpdateCartCount;
+import com.softtech.stevekamau.buyathome.model.FeaturedModel;
+import com.softtech.stevekamau.buyathome.model.HotDealsModel;
 import com.softtech.stevekamau.buyathome.model.NewModel;
+import com.softtech.stevekamau.buyathome.model.RecommendedModel;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.FragmentDrawerListener {
+public class MainActivity extends AppCompatActivity
+        implements NavigationDrawerFragment.FragmentDrawerListener, OnOptionsSelectedInterface {
     private static final String TAG = MainActivity.class.getSimpleName();
     //private static final String url2 = "http://10.0.3.2/buyathome/userdetails/all_products.php";
     private static final String url2 = "http://snapt.t15.org/buyathome/all_products.php";
     static Button notifCount;
     static int mNotifCount = 0;
-    private static String Title = "title";
-    private static String Rate = "rating";
-    private static String Genre = "genre";
-    private static String bitmap = "thumbnailUrl";
-    int numRows;
-    int id_To_Update = 0;
-    TextView one, two;
+    int profile_counts;
     CartDB cartDB;
     Boolean isBackPressed = false;
-    MenuItem item;
+    MenuItem itemCart;
     Button b1;
     ImageView img, img1, img2, img3;
     Context context;
     HorizontalListView lv, listView;
     com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar loadingProgressBar;
-    NewGridAdapter ad;
+    NewGridAdapter newGridAdapter;
     CustomGridAdapter adapter;
     String data;
     Activity activity;
-    RecomGridAdapter ra;
-    FeaturedGridAdapter feat_adapter;
+    RecomGridAdapter recommendedAdapter;
+    FeaturedGridAdapter featuredAdapter;
     String p_name, img_url, p_amount, p_tags, p_details;
     int p_id, p_rating;
     TextView mToolBarTextView;
-    String title_fragment;
+    LayerDrawable icon;
+    String count;
     private Toolbar toolbar;
     private com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar bar;
     private List<NewModel> modelList = new ArrayList<NewModel>();
+    //private List<NewModel> featured_modelList = new ArrayList<NewModel>();
     private ViewFlipper mViewFlipper;
     private Animation.AnimationListener mAnimationListener;
     private Context mContext;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,13 +140,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         cartDB.getSalesSold();
         composeViews();
 
-      /*  if(ad.i){
-            Snackbar.make(findViewById(android.R.id.content), "empty", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }else {
-            Snackbar.make(findViewById(android.R.id.content), "full", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }*/
         //setListViewHeightBasedOnChildren(lv);
 
         (findViewById(R.id.whatsNew_btn)).setOnClickListener(new View.OnClickListener() {
@@ -150,29 +158,31 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 startActivity(i);
             }
         });
+        (findViewById(R.id.hotdeals_btn)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MoreProducts.class);
+                i.putExtra("title", "Hot Deals");
+                startActivity(i);
+            }
+        });
+
     }
 
+
     private void composeViews() {
-        RecyclerView rv = (RecyclerView) findViewById(R.id.rv);
-        LinearLayoutManager llm = new LinearLayoutManager(context);
-        rv.setLayoutManager(llm);
-        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
-        ad = new NewGridAdapter(this, modelList);
-        rv.setAdapter(ad);
+        //new stuff adapter
+        RecyclerView newStuffRecyclerView = (RecyclerView) findViewById(R.id.rv);
+        LinearLayoutManager newStuffLlm = new LinearLayoutManager(context);
+        newStuffRecyclerView.setLayoutManager(newStuffLlm);
+        newStuffLlm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        newGridAdapter = new NewGridAdapter(this, modelList, this);
+        newStuffRecyclerView.setAdapter(newGridAdapter);
 
-        RecyclerView rv2 = (RecyclerView) findViewById(R.id.rv2);
-        LinearLayoutManager llm2 = new LinearLayoutManager(context);
-        rv2.setLayoutManager(llm2);
-        llm2.setOrientation(LinearLayoutManager.HORIZONTAL);
-        ra = new RecomGridAdapter(this, modelList);
-        rv2.setAdapter(ra);
-
-        RecyclerView rv3 = (RecyclerView) findViewById(R.id.feat);
-        LinearLayoutManager llm3 = new LinearLayoutManager(context);
-        rv3.setLayoutManager(llm3);
-        llm3.setOrientation(LinearLayoutManager.HORIZONTAL);
-        feat_adapter = new FeaturedGridAdapter(this, modelList);
-        rv3.setAdapter(feat_adapter);
+        cartDB = new CartDB(this);
+        //convert sqlite rows into Json fields
+        Gson gson = new GsonBuilder().create();
+        Log.d("json_array", gson.toJson(cartDB.getSalesSold()));
     }
 
     private void getDataFromIntent() {
@@ -199,6 +209,10 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     }
 
     private void parseMainData(String data) {
+        List<FeaturedModel> featured_modelList = new ArrayList<FeaturedModel>();
+        List<RecommendedModel> recommended_modelList = new ArrayList<RecommendedModel>();
+        List<HotDealsModel> hotDealsModelList = new ArrayList<HotDealsModel>();
+        List<Integer> randomIdsList = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(data);
 
@@ -217,6 +231,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
 
                     UrlFormatter urlFormatter = new UrlFormatter();
                     img_url = urlFormatter.unescapeJavaString((obj.getString("image_url")));
+
+                    //new list
                     NewModel model = new NewModel();
 
                     model.setId(p_id);
@@ -227,115 +243,115 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                     model.setDetails(p_details);
                     model.setRatings(p_rating);
 
-                    if (p_tags.contains("new_product")) {
+                    if (p_tags.contains("new_product") && !p_tags.contains("featured_product")) {
+                        if (modelList.size() < 10) {
+                            modelList.add(model);
+                        }
 
-                        modelList.add(model);
                     }
+
+                    //featured list
+                    FeaturedModel featuredModel = new FeaturedModel();
+                    featuredModel.setId(p_id);
+                    featuredModel.setName(p_name);
+                    featuredModel.setImage_url(img_url);
+                    featuredModel.setAmount(p_amount);
+                    featuredModel.setTags(p_tags);
+                    featuredModel.setDetails(p_details);
+                    featuredModel.setRatings(p_rating);
+
                     if (p_tags.contains("featured_product")) {
-                        modelList.add(model);
+                        if (featured_modelList.size() < 10) {
+                            featured_modelList.add(featuredModel);
+                        }
                     }
-                    if (p_tags.contains("recommended_product")) {
-                        modelList.add(model);
+
+                    //randomize recommended
+                    int recommended_modelSize = jsonArray.length();
+                    Random r = new Random();
+                    int randomObjectIndex = r.nextInt(recommended_modelSize - 0) + 0;
+                    JSONObject selectedRandomObject = jsonArray.getJSONObject(randomObjectIndex);
+
+                    UrlFormatter random_urlFormatter = new UrlFormatter();
+                    String random_img_url = random_urlFormatter.unescapeJavaString((selectedRandomObject.getString("image_url")));
+
+                    RecommendedModel recommendedModel = new RecommendedModel();
+                    recommendedModel.setId(selectedRandomObject.getInt("p_id"));
+                    recommendedModel.setName(selectedRandomObject.getString("p_name"));
+                    recommendedModel.setImage_url(random_img_url);
+                    recommendedModel.setAmount(selectedRandomObject.getString("p_amount"));
+                    recommendedModel.setTags(selectedRandomObject.getString("tags"));
+                    recommendedModel.setDetails(selectedRandomObject.getString("p_details"));
+                    recommendedModel.setRatings(selectedRandomObject.getInt("p_rating"));
+                    recommendedModel.setDiscountedAmount(selectedRandomObject.getString("discounted_amount"));
+
+                    if (!selectedRandomObject.getString("tags").contains("featured_product")
+                            && !randomIdsList.contains(selectedRandomObject.getInt("p_id"))) {
+                        if (recommended_modelList.size() < 10) {
+                            randomIdsList.add(selectedRandomObject.getInt("p_id"));
+                            recommended_modelList.add(recommendedModel);
+                            Log.d("tags_2", recommended_modelList.get(0).getName());
+                        }
                     }
+
+                    //randomize hot deals
+                    HotDealsModel hotDealsModel = new HotDealsModel();
+                    hotDealsModel.setId(selectedRandomObject.getInt("p_id"));
+                    hotDealsModel.setName(selectedRandomObject.getString("p_name"));
+                    hotDealsModel.setImage_url(random_img_url);
+                    hotDealsModel.setAmount(selectedRandomObject.getString("p_amount"));
+                    hotDealsModel.setTags(selectedRandomObject.getString("tags"));
+                    hotDealsModel.setDetails(selectedRandomObject.getString("p_details"));
+                    hotDealsModel.setRatings(selectedRandomObject.getInt("p_rating"));
+                    hotDealsModel.setDiscountedAmount(selectedRandomObject.getString("discounted_amount"));
+
+                    if (selectedRandomObject.getString("tags").contains("hot_deal")) {
+                        if (hotDealsModelList.size() < 10) {
+                            hotDealsModelList.add(hotDealsModel);
+                        }
+                    }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
             }
+            setAdapters(featured_modelList, recommended_modelList, hotDealsModelList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void mainRequest(final String tags) {
-        bar = (com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) this.findViewById(R.id.progressBar);
-        bar.setCircleBackgroundEnabled(false);
-        bar.setColorSchemeResources(android.R.color.holo_green_light);
-        bar.setVisibility(View.VISIBLE);
-        // Creating volley request obj
-        final JsonArrayRequest productReq = new JsonArrayRequest(url2,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d(TAG, response.toString());
-                        bar.setVisibility(View.GONE);
-                        // Parsing json
-                        for (int i = 0; i < response.length(); i++) {
-                            if (tags.contains("new")) {
-                                try {
+    private void setAdapters(List<FeaturedModel> featured_modelList,
+                             List<RecommendedModel> recommended_modelList, List<HotDealsModel> hotDealsModelList) {
+        //featured adapter
+        RecyclerView featuredRecyclerView = (RecyclerView) findViewById(R.id.feat);
+        LinearLayoutManager featuredLlm = new LinearLayoutManager(context);
+        featuredRecyclerView.setLayoutManager(featuredLlm);
+        featuredLlm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        FeaturedGridAdapter featuredAdapter = new FeaturedGridAdapter(this, featured_modelList);
+        featuredRecyclerView.setAdapter(featuredAdapter);
 
-                                    JSONObject obj = response.getJSONObject(i);
-                                    NewModel model = new NewModel();
-                                    model.setId(obj.getInt("p_id"));
-                                    model.setName(obj.getString("p_name"));
-                                    UrlFormatter urlFormatter = new UrlFormatter();
-                                    String img_url = urlFormatter.unescapeJavaString((obj.getString("image_url")));
-                                    Log.d("image_url", img_url);
-                                    model.setImage_url(img_url);
-                                    model.setAmount(obj.getString("p_amount"));
-                                    model.setTags(obj.getString("tags"));
-                                    model.setDetails(obj.getString("p_details"));
-                                    model.setRatings(obj.getInt("p_rating"));
-                                    modelList.add(model);
+        //recommended adapter
+        RecyclerView recommendedRecyclerView = (RecyclerView) findViewById(R.id.rv2);
+        LinearLayoutManager recommendedLlm = new LinearLayoutManager(context);
+        recommendedRecyclerView.setLayoutManager(recommendedLlm);
+        recommendedLlm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recommendedAdapter = new RecomGridAdapter(this, recommended_modelList, this);
+        recommendedRecyclerView.setAdapter(recommendedAdapter);
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        // notifying list adapter about data changes
-                        // so that it renders the list view with updated data
-                        ad.notifyDataSetChanged();
-                        ra.notifyDataSetChanged();
-                        feat_adapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                       /* if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            if (!isFinishing()) {
-                                showAlertDialog();
-                            }
-                            bar.setVisibility(View.GONE);
-                            Context context = getApplicationContext();
-                        } else if (error instanceof AuthFailureError) {
-                            if (!isFinishing()) {
-                                serverDialog();
-                            }
-                            bar.setVisibility(View.GONE);
-                            Context context = getApplicationContext();
-                        } else if (error instanceof ServerError) {
-                            if (!isFinishing()) {
-                                serverDialog();
-                            }
-                            bar.setVisibility(View.GONE);
-                            Context context = getApplicationContext();
-                        } else if (error instanceof NetworkError) {
-                            if (!isFinishing()) {
-                                showAlertDialog();
-                            }
-                            bar.setVisibility(View.GONE);
-                            Context context = getApplicationContext();
-                        } else if (error instanceof ParseError) {
-                            if (!isFinishing()) {
-                                serverDialog();
-                            }
-                            bar.setVisibility(View.GONE);
-                            Context context = getApplicationContext();
-                        }*/
+        //hot deals
+        RecyclerView hot_dealsrvRecyclerView = (RecyclerView) findViewById(R.id.hot_dealsrv);
+        LinearLayoutManager fhot_dealsrvLlm = new LinearLayoutManager(context);
+        hot_dealsrvRecyclerView.setLayoutManager(fhot_dealsrvLlm);
+        fhot_dealsrvLlm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        HotDealsAdapter hotDealsAdapter = new HotDealsAdapter(this, hotDealsModelList, this);
+        hot_dealsrvRecyclerView.setAdapter(hotDealsAdapter);
 
 
-            }
-
-            ;
-        });
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(productReq);
     }
-
 
     Boolean getstatus() {
         SharedPreferences spref2 = getSharedPreferences("ACCOUNT", MODE_PRIVATE);
@@ -400,7 +416,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment);
-            fragmentTransaction.addToBackStack("Frag1");
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
             // set the toolbar title
@@ -408,7 +424,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
             // getSupportActionBar().setTitle(title);
         }
     }
-
 
     private void socialDialog() {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -472,28 +487,27 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     @Override
     protected void onResume() {
         super.onResume();
-
+        invalidateOptionsMenu();
         // Logs 'install' and 'app activate' App Events.
 //        AppEventsLogger.activateApp(this);
-        if (item != null) {
-            MenuItemCompat.setActionView(item, R.layout.feed_update_count);
-            View view = MenuItemCompat.getActionView(item);
-            int profile_counts = cartDB.numberOfRows();
-            notifCount = (Button) view.findViewById(R.id.notif_count);
-            notifCount.setText(String.valueOf(profile_counts));
-            cartDB.close();
-            notifCount.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(MainActivity.this, Cart.class);
-                    startActivity(i);
-                }
-            });
-        }
+
+        // setBadgeCount(MainActivity.this, icon);
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(AppConfig.PURCHASE_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(AppConfig.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
     }
 
     @Override
     protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
 
         // Logs 'app deactivate' App Event.
@@ -521,48 +535,65 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        MenuItemCompat.setActionView(item, R.layout.feed_update_count);
-        View view = MenuItemCompat.getActionView(item);
-        int profile_counts = cartDB.numberOfRows();
-        notifCount = (Button) view.findViewById(R.id.notif_count);
-        notifCount.setText(String.valueOf(profile_counts));
-        cartDB.close();
-        notifCount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, Cart.class);
-                startActivity(i);
+        /*if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+
             }
-        });
+        }*/
+        setBadgeCount(MainActivity.this, icon);
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        itemCart = menu.findItem(R.id.action_cart);
+        icon = (LayerDrawable) itemCart.getIcon();
+        setBadgeCount(MainActivity.this, icon);
+        return true;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        item = menu.findItem(R.id.badge);
-        MenuItemCompat.setActionView(item, R.layout.feed_update_count);
-        View view = MenuItemCompat.getActionView(item);
-        int profile_counts = cartDB.numberOfRows();
-        notifCount = (Button) view.findViewById(R.id.notif_count);
-        notifCount.setText(String.valueOf(profile_counts));
-        cartDB.close();
-        notifCount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, Cart.class);
-                startActivity(i);
-            }
-        });
+        itemCart = menu.findItem(R.id.action_cart);
+
+        icon = (LayerDrawable) itemCart.getIcon();
+        setBadgeCount(MainActivity.this, icon);
+
         return super.onCreateOptionsMenu(menu);
 
     }
 
-    private void setNotifCount(int count) {
-        mNotifCount = count;
-        supportInvalidateOptionsMenu();
-    }
+    public void setBadgeCount(final Context context, final LayerDrawable icon) {
 
+        new Thread() {
+            public void run() {
+                final int profile_counts = cartDB.numberOfRows();
+                count = String.valueOf(profile_counts);
+                //show
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BadgeDrawable badge;
+
+                        // Reuse drawable if possible
+                        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+                        if (reuse != null && reuse instanceof BadgeDrawable) {
+                            badge = (BadgeDrawable) reuse;
+                        } else {
+                            badge = new BadgeDrawable(context);
+                        }
+
+                        badge.setCount(count);
+                        icon.mutate();
+                        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+                    }
+                });
+
+            }
+        }.start();
+
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -593,11 +624,64 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         if (id == R.id.menu_contact) {
             socialDialog();
         }
-        if (id == R.id.action_refresh) {
-            // laptopsRequest();
+        if (id == R.id.action_cart) {
+            Intent intent = new Intent(getApplicationContext(), Cart.class);
+            startActivityForResult(intent, 1);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onShareButtonclicked(String name, String amount) {
+        final String appPackageName = getPackageName();
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                "Hey, check out " + name + " at BuyAtHome app for Android at only Kshs." + amount
+                        + "\nDownload the app for more amazing deals: "
+                        + "https://play.google.com/store/apps/details?id=" + appPackageName);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "BuyAtHome App for Android");
+        startActivity(Intent.createChooser(shareIntent, "share..."));
+    }
+
+    @Override
+    public void onAddToCartButtonClicked(int id, String name, String amount, String details, String encodedImageData, String s, String mAmount) {
+        addTCart(String.valueOf(id), name, amount, details, encodedImageData, "1", amount);
+        setBadgeCount(MainActivity.this, icon);
+        //setBadgeCount(MainActivity.this, icon);
+    }
+
+    @Override
+    public void onAddToWishList(int id, String name, String amount, String details, String encodedImageData, String s, String mAmount) {
+        addToWishList(String.valueOf(id), name, amount, details, encodedImageData, "1", mAmount);
+    }
+
+    @Override
+    public void onDeleteItem() {
+
+    }
+
+    public void addToWishList(String id, String name, String amount, String details, String encodedImageData, String s1, String mAmount) {
+        WishDB wishDB = new WishDB(this);
+        wishDB.insertIntoWishList(id, name, amount, details, encodedImageData, "1", mAmount);
+
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Successful!")
+                .setContentText("Item added item to wishlist!")
+                .show();
+        EventBus.getDefault().post(new UpdateCartCount(1));
+    }
+
+    public void addTCart(String id, String name, String amount, String details, String encodedImageData, String s1, String amount1) {
+        cartDB.insertIntoCart(id, name, amount, details, encodedImageData, "1", amount);
+//Log.d("cart_clicked")
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Successful!")
+                .setContentText("Item added item to cart!")
+                .show();
+        setBadgeCount(MainActivity.this, icon);
+        EventBus.getDefault().post(new UpdateCartCount(1));
     }
 
 }
